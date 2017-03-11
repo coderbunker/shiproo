@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "hfc": "^0.6.5",
+    "pify": "^2.3.0",
+    "pify-proto": "^0.1.1",
     "ws": "^2.2.0"
   }
 }
