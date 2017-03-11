@@ -1,4 +1,4 @@
 {
-    message: "loginReply"
-    token: "TOKEN1"
+    "message": "loginReply",
+    "token": "TOKEN1"
 }

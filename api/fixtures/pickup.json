@@ -1,4 +1,4 @@
 {
-    message: "pickup",
-    parcelId: "TRANSACTION_ID"
+    "message": "pickup",
+    "parcelId": "TRANSACTION_ID"
 }

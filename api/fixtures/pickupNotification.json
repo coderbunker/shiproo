@@ -1,4 +1,4 @@
 {
-    message: "pickupNotification",
-    routeId: "TRANSACTION_ID"
+    "message": "pickupNotification",
+    "routeId": "TRANSACTION_ID"
 }
