@@ -1,5 +1,5 @@
 {
     "message": "login",
-    "username": "lenovo",
+    "username": "$USERNAME",
     "password": "password"
 }

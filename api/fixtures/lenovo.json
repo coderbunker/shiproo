@@ -1,0 +1,10 @@
+[
+    {
+        "query": "login",
+        "expect": "loginReply"
+    },
+    {
+        "query": "createParcel",
+        "expect": "createParcelReply"
+    }
+]
