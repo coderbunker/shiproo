@@ -19,7 +19,6 @@ const eventHubAddr = process.env.SDK_EVENTHUB_ADDRESS
 	? process.env.SDK_EVENTHUB_ADDRESS
 	: `${PEER_SERVER}:7053` ;
 
-
 process.on('exit', function (){
   chain.eventHubDisconnect();
 });
@@ -34,10 +33,10 @@ chain.setMemberServicesUrl("grpc://" + caAddr, grpcOpts);
 console.log("Setting peer address to grpcs://" + peerAddrs);
 peerAddrs.map((a) => chain.addPeer("grpc://" + a, grpcOpts));
 
-chain.eventHubConnect("grpc://" + eventHubAddr);
-process.on('exit', function (){
-  chain.eventHubDisconnect();
-});
+// chain.eventHubConnect("grpc://" + eventHubAddr);
+// process.on('exit', function (){
+//   chain.eventHubDisconnect();
+// });
 
 
 // TODO: get this to work
@@ -49,7 +48,6 @@ process.on('exit', function (){
 // 		console.log(event.payload.toString())
 // 	});
 // }
-
 
 function getUser(username, enroll) {
 	 return chain.getUser(username)
