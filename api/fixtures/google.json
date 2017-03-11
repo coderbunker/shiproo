@@ -23,5 +23,8 @@
     {
         "invoke": "pickup",
         "expect": "pickupReply"
+    },
+    {
+        "debug": "SUCCESS"
     }
 ]
