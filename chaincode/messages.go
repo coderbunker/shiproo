@@ -7,7 +7,6 @@ const (
 )
 
 type Login struct {
-	Message  string `json:"message"`
 	UserName string `json:"username"`
 	Password string `json:"password"`
 }

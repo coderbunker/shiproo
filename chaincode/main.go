@@ -58,26 +58,30 @@ func main() {
 func handleLogin(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
 	ljs, err := stub.GetState("logins")
 	spew.Dump(ljs)
-	spew.Dump(err)
 	if err != nil {
+		spew.Dump(err)
 		return
 	}
 
-	var logins []*Login
-	if err = json.Unmarshal(ljs, logins); err != nil {
+	var logins []Login
+	if err = json.Unmarshal(ljs, &logins); err != nil {
+		spew.Dump(err)
 		return
 	}
 	spew.Dump(args)
 	var login *Login
-	for _, login = range logins {
-		if login.UserName == args[0] && login.Password == args[1] {
+	for _, l := range logins {
+		if l.UserName == args[0] && l.Password == args[1] {
+			login = &l
 			break
 		}
 	}
 	if login == nil {
 		err = errors.New("matching user not found")
+		spew.Dump(err)
 		return
 	}
+	spew.Dump("found", login)
 	return
 }
 func handleCreateParcel(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
