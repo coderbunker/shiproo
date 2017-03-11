@@ -40,7 +40,7 @@ func get(stub shim.ChaincodeStubInterface, item interface{}, key string) error {
 func (o *chain) Init(stub shim.ChaincodeStubInterface, function string, args []string) (ret []byte, err error) {
 	spew.Dump("init")
 	logins := []Login{
-		{UserName: "shipper1", Password: "s1"},
+		{UserName: "shuyu", Password: "shuyu"},
 	}
 	put(stub, logins, "logins")
 	parcels := []CreateParcel{}
@@ -83,9 +83,17 @@ func main() {
 func handleLogin(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
 	var logins []Login
 	get(stub, &logins, "logins")
+	spew.Dump(args)
+
+	var lx Login
+	if err = json.Unmarshal([]byte(args[0]), &lx); err != nil {
+		spew.Dump(err)
+		return
+	}
+
 	var login *Login
 	for _, l := range logins {
-		if l.UserName == args[0] && l.Password == args[1] {
+		if l.UserName == lx.UserName && l.Password == lx.Password {
 			login = &l
 			break
 		}
@@ -96,18 +104,63 @@ func handleLogin(stub shim.ChaincodeStubInterface, args []string) (ret []byte, e
 		return
 	}
 	spew.Dump("found:", login)
+	ret, err = json.Marshal(LogingReply{Token: "XXX"})
 	return
 }
+
 func handleCreateParcel(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
+	var parcels []CreateParcel
+	get(stub, &parcels, "parcels")
+	spew.Dump(args)
+
+	var parcel CreateParcel
+	if err = json.Unmarshal([]byte(args[0]), &parcel); err != nil {
+		spew.Dump(err)
+		return
+	}
+
+	parcels = append(parcels, parcel)
+	if err = put(stub, parcels, "parcels"); err != nil {
+		return
+	}
+	ret, err = json.Marshal(CreateParcelReply{ParcelID: "YYY"})
 	return
 }
+
 func handleFindRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
+	var routes []Route
+	get(stub, &routes, "routes")
+	spew.Dump(args)
+
+	var fRoute FindRoute
+	if err = json.Unmarshal([]byte(args[0]), &fRoute); err != nil {
+		spew.Dump(err)
+		return
+	}
+
+	ret, err = json.Marshal(FindRouteReply{Routes: routes})
 	return
 }
+
 func handleBuyRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
+	var bRoute BuyRoute
+	if err = json.Unmarshal([]byte(args[0]), &bRoute); err != nil {
+		spew.Dump(err)
+		return
+	}
+
+	ret, err = json.Marshal(BuyRouteReply{RouteID: "RRR"})
 	return
 }
+
 func handlePickup(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
+	var pickup Pickup
+	if err = json.Unmarshal([]byte(args[0]), &pickup); err != nil {
+		spew.Dump(err)
+		return
+	}
+
+	ret, err = json.Marshal(PickupReply{Reply: "OK"})
 	return
 }
 
