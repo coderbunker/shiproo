@@ -1,4 +1,4 @@
 {
    "message": "buyRouteReply",
-   "transactionId": "UUID"
+   "transactionId": "$UUID"
 }

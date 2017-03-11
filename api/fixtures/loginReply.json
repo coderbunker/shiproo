@@ -1,4 +1,5 @@
 {
     "message": "loginReply",
-    "token": "$UUID"
+    "token": "$UUID",
+    "txId": "$UUID"
 }

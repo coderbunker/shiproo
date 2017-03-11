@@ -1,4 +1,5 @@
 {
     "message": "createParcelReply",
-    "parcelId": "TRANSACTION_ID"
+    "parcelId": "$UUID",
+    "txId": "$UUID"
 }

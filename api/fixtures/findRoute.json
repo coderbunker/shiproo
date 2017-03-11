@@ -1,4 +1,4 @@
 {
     "message": "findRoute",
-    "parcelId": "UUID"
+    "parcelId": "$UUID"
 }

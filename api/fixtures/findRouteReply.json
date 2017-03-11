@@ -12,5 +12,6 @@
             "price": 100,
             "currency": "USD"
         }
-    }
+    },
+    "txId": "$UUID"
 }

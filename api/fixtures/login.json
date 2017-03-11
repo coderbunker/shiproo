@@ -1,5 +1,6 @@
 {
     "message": "login",
     "username": "$USERNAME",
+    "affiliation": "$AFFILIATION",
     "password": "password"
 }

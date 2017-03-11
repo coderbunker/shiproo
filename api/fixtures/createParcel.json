@@ -3,7 +3,8 @@
     "shipper": "lenovo",
     "receiver": "google",
     "parcel": {
-        "orderId": "$UUID",
+        "parcelId": "$UUID",
+        "orderId": "order1",
         "pickupAddress": "Xuhui, Shanghai, PRC",
         "destinationAddress": "Mountain View, California, USA",
         "size": [61,46,46],

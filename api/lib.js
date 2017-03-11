@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const uuidV4 = require('uuid/v4');
 
 function loadJsonText(jsonPath) {
     return fs.readFileSync(jsonPath).toString()
@@ -11,7 +12,11 @@ function loadJson(jsonPath) {
 
 function loadQuery(name, values) {
     const query = loadJsonText(path.join(__dirname, 'fixtures', `${name}.json`))
-    return JSON.parse(query.replace('$USERNAME', values.username))
+    const modified = query
+        .replace('\$USERNAME', values.username)
+        .replace('\$AFFILIATION', values.affiliation)
+        .replace('\$UUID', uuidV4())
+    return JSON.parse(modified)
 }
 
 function loadQueryText(name, values) {

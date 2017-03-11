@@ -11,7 +11,7 @@ var registrar;
 invoke.getUser(orgConfig.registrar, orgConfig.enroll)
     .then((user) => {
         registrar = user
-        return invoke.invoke(user, 'login', orgConfig.users[0])
+        return invoke.invoke(registrar, 'login', orgConfig.users[0])
     })
     .then((result) => console.log(result))
     .then(() => {

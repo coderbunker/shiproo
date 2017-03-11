@@ -1,4 +1,5 @@
 {
     "message": "pickupReply",
-    "reply": "CONFIRMED"
+    "reply": "CONFIRMED",
+    "txId": "$UUID"
 }
