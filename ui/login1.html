@@ -11,6 +11,7 @@ body {
     font-family: arial;	
 }
 .logo {
+  margin-top: -50px;
   height: 8em;
   text-align: center;
 
@@ -36,7 +37,7 @@ header {
 position: relative;
 overflow: hidden;
 width: 100%;
-height: 5000px;
+height: 900px;
 }
 #inner-wrapper {
 width: 100%;
@@ -117,13 +118,10 @@ color: #777777;
 padding-left: 10px;
 margin-right: 10px;
 }
-.main {		
+.main {
+	background-image: url(http://i44.photobucket.com/albums/f9/Shuyu_Wu/Screen%20Shot%202017-03-10%20at%204.55.10%20PM_zpserb6d2qj.png);		
 	height:30em;	
-	margin-top: 40px;
-	text-align: center;
-}
-table {
-	text-align: center;
+	margin-top: 40px
 }
 .slogan {
 	padding-top: 7em;
@@ -135,50 +133,28 @@ table {
 	text-align: center;
 	margin-bottom: 0
 }
-table {
-	background: #f5f5f5;
-	border-collapse: separate;
-	box-shadow: inset 0 1px 0 #fff;
-	font-size: 12px;
-	line-height: 24px;
-	margin: 30px auto;
-	text-align: left;
-	width: 800px;
-}	
-
-th {
-	background: url(http://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
-	border-left: 1px solid #555;
-	border-right: 1px solid #777;
-	border-top: 1px solid #555;
-	border-bottom: 1px solid #333;
-	box-shadow: inset 0 1px 0 #999;
-	color: #fff;
-  font-weight: bold;
-	padding: 10px 15px;
-	position: relative;
-	text-shadow: 0 1px 0 #000;	
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: 40px auto 50px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
-
-td {
-	border-right: 1px solid #fff;
-	border-left: 1px solid #e8e8e8;
-	border-top: 1px solid #fff;
-	border-bottom: 1px solid #e8e8e8;
-	padding: 10px 15px;
-	position: relative;
-	transition: all 300ms;
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
 }
-
-tr {
-	background: url(http://jackrugile.com/images/misc/noise-diagonal.png);	
-}	
-
-
-.selected {
-    background-color: #808080;
-}
-#tst {
+.form button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
@@ -191,7 +167,6 @@ tr {
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
-  width:100px;
 }
   </style>
 <body>
@@ -206,30 +181,28 @@ tr {
 			<a href="#" class="toggle-nav">X</a>
 			<ul class="category">
 				<li>
-					<a href="#" class="receiver"><div class="aa"><i class="fa fa-user fa-2x"></i></div>Receiver</a>
+					<a href="#" class=><div class="aa"><i class="fa fa-user fa-2x"></i></div>Receiver</a>
 				</li>
 				<li>
-					<a href="#" class="shipper"><div class="aa"><i class="fa fa-user-o fa-2x"></i></div>Shipper</a>
+					<a href="#"><div class="aa"><i class="fa fa-user-o fa-2x"></i></div>Shipper</a>
 				</li>
 				<li class="function">
-					<a href="#" class="courier"><div class="aa"><i class="fa fa-truck fa-2x"></i></div>Courier</a>
+					<a href="#"><div class="aa"><i class="fa fa-truck fa-2x"></i></div>Courier</a>
 				</li>
 			</ul>
 		</nav>
-		<div class="main" style="overflow-x:auto;">
-			<table id="table">
-			  <thead>
-			    <tr>
-			      <th>Option</th>
-			      <th>Routers</th>
-			      <th>Time</th>
-			      <th>Price</th>
-			    </tr>
-			  </thead>
-			  <tbody id="options">
-			  </tbody>
-			</table>
-			<input type="button" id="tst" value="Submit" onclick="fnselect()" />
+		<div class="creating-page">
+			<div class="form">
+				<form class="register-form">
+					<input type="text" placeholder="Order ID" />
+					<input type="text" placeholder="Shipper name" />
+					<input type="text" placeholder="Pickup address" />
+					<input type="text" placeholder="Destination address" />
+					<input type="text" placeholder="size(x,y,z)" />
+					<input type="text" placeholder="weight(kg)" />
+					<button>Creat a parcel</button>
+				</form>
+			</div>
 		</div>
 		<div class="footer">
       		<p class="footer1">Copyright © ShipRoo, All Rights Reserved.</p>    
@@ -237,7 +210,6 @@ tr {
 	</div>	
 </div>
 <script src="assets/jquery-3.1.1.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
 <script>
 $(function() { 
     // Toggle Nav on Click
@@ -255,47 +227,5 @@ function toggleNav() {
         $('#outer-wrapper').addClass('show-nav');
     }
 }
-
-
-    $(function() {
-
-
-   var people = [];
-
-   $.getJSON('../api/fixtures/findRouteReply.json', function(data) {
-       $.each(data.route, function(i, f) {
-          var tblRow = "<tr>" + "<td>" + f.number + "</td>" +
-           "<td>" + f.hops + "</td>" + "<td>" + f.time + "</td>" + "<td>" + f.price + "</td>" + "</tr>"
-           $(tblRow).appendTo("tbody");
-     });
-
-   });
-
-});
-
-function highlight(e) {
-    if (selected[0]) selected[0].className = '';
-    e.target.parentNode.className = 'selected';
-    
-}
-
-var table = document.getElementById('table'),
-    selected = table.getElementsByClassName('selected');
-table.onclick = highlight;
-
-function fnselect(){
-var $row=$(this).parent().find('td');
-    var clickeedID=$row.eq(0).text();
-   // alert(clickeedID);
-}
-
-$("#tst").click(function(){
-    var value ="You selected Option" + $(".selected td:first").html();
-    if ($(".selected td:first").html()==null) {
-    	alert("No Row Selected");
-    	return
-    }
-    alert(value);
-});
 </script>
 </body>
