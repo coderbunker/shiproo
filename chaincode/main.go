@@ -60,8 +60,6 @@ func (o *chain) Invoke(stub shim.ChaincodeStubInterface, function string, args [
 		return handleLogin(stub, args)
 	case "createParcel":
 		return handleCreateParcel(stub, args)
-	case "findRoute":
-		return handleFindRoute(stub, args)
 	case "buyRoute":
 		return handleBuyRoute(stub, args)
 	case "pickup":
@@ -71,7 +69,11 @@ func (o *chain) Invoke(stub shim.ChaincodeStubInterface, function string, args [
 }
 
 func (o *chain) Query(stub shim.ChaincodeStubInterface, function string, args []string) (ret []byte, err error) {
-	spew.Dump(stub)
+	spew.Dump(function)
+	switch function {
+	case "queryRoute":
+		return queryRoute(stub, args)
+	}
 	return
 }
 
@@ -115,45 +117,55 @@ func handleLogin(stub shim.ChaincodeStubInterface, args []string) (ret []byte, e
 }
 
 func handleCreateParcel(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
-	var parcels []CreateParcel
-	get(stub, &parcels, "parcels")
-	spew.Dump(args)
-
 	var parcel CreateParcel
 	if err = json.Unmarshal([]byte(args[0]), &parcel); err != nil {
 		spew.Dump(err)
 		return
 	}
-
-	parcels = append(parcels, parcel)
-	err = put(stub, parcels, "parcels")
+	err = put(stub, parcel, parcel.ParcelID)
 	return
 }
 
-func handleFindRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
+func queryRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
+	// pre declare routes, load them
 	var routes []Route
 	get(stub, &routes, "routes")
 	spew.Dump(args)
 
-	var fRoute FindRoute
+	var fRoute QueryRoute
 	if err = json.Unmarshal([]byte(args[0]), &fRoute); err != nil {
 		spew.Dump(err)
 		return
 	}
 	// find parcel
-
-	ret, err = json.Marshal(FindRouteReply{Routes: routes})
+	var parcel CreateParcel
+	if err = get(stub, &parcel, fRoute.ParcelID); err != nil {
+		spew.Dump(err)
+		return
+	}
+	// return all routes for now - TODO
+	ret, err = json.Marshal(QueryRouteReply{Routes: routes})
 	return
 }
 
+// create HopIDs based on routeId
 func handleBuyRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
 	var bRoute BuyRoute
 	if err = json.Unmarshal([]byte(args[0]), &bRoute); err != nil {
 		spew.Dump(err)
 		return
 	}
-
-	ret, err = json.Marshal(BuyRouteReply{RouteID: "RRR"})
+	// find parcel
+	var parcel CreateParcel
+	if err = get(stub, &parcel, bRoute.ParcelID); err != nil {
+		spew.Dump(err)
+		return
+	}
+	// for each hop in route, create a Leg
+	for _, hop := range bRoute.Route.Hops {
+		put(stub, hop, hop.HopID)
+		spew.Dump("saved hop", hop)
+	}
 	return
 }
 
@@ -163,8 +175,13 @@ func handlePickup(stub shim.ChaincodeStubInterface, args []string) (ret []byte, 
 		spew.Dump(err)
 		return
 	}
+	// find parcel
+	var parcel CreateParcel
+	if err = get(stub, &parcel, pickup.ParcelID); err != nil {
+		spew.Dump(err)
+		return
+	}
 
-	ret, err = json.Marshal(PickupReply{Reply: "OK"})
 	return
 }
 

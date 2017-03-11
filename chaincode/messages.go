@@ -17,13 +17,39 @@ type LogingReply struct {
 	Token string `json:"token"`
 }
 
+type Parcel struct {
+	OrderID     string `json:"orderId"`
+	Origin      string `json:"origin"`
+	Destination string `json:"destination"`
+	Size        []int  `json:"size"`
+	Weight      int    `json:"int"`
+
+	CurrentHop int
+	Hops       []Hop
+}
+
 type CreateParcel struct {
-	Message  string                 `json:"message"`
-	Shipper  string                 `json:"shipper"`
-	Receiver string                 `json:"receiver"`
-	Parcel   map[string]interface{} `json:"parcel"`
-	Customs  map[string]string      `json:"customs"`
-	ParcelID string                 `json:"parcelId"`
+	Message  string            `json:"message"`
+	Shipper  string            `json:"shipper"`
+	Receiver string            `json:"receiver"`
+	Parcel   Parcel            `json:"parcel"`
+	Customs  map[string]string `json:"customs"`
+	ParcelID string            `json:"parcelId"` // passed by R
+}
+
+type QueryRoute struct {
+	Message  string `json:"message"`
+	ParcelID string `json:"parcelId"` // passed by R
+}
+type QueryRouteReply struct {
+	Message string `json:"message"`
+	Routes  []Route
+}
+
+type Route struct {
+	Hops     []Hop
+	Payment  int    `json:"payment"`
+	Currency string `json:"currency"`
 }
 
 type CreateParcelReply struct {
@@ -34,21 +60,10 @@ type ParcelNotification struct {
 	Message string `json:"message"`
 }
 
-type FindRoute struct {
-	Message  string `json:"message"`
-	ParcelID string `json:"parcelID`
-}
-
-type FindRouteReply struct {
-	Message string `json:"message"`
-	Routes  []Route
-}
-
 type BuyRoute struct {
 	Message  string `json:"message"`
-	RouteID  string `json:"routeId"`
-	Payment  int    `json:"payment"`
-	Currency string `json:"currency"`
+	ParcelID string `json:"parcelID"`
+	Route    Route
 }
 
 type BuyRouteReply struct {
@@ -56,22 +71,23 @@ type BuyRouteReply struct {
 	RouteID string `json:"routeId"`
 }
 
-type Route struct {
-	RouteID  string `json:"state"`
-	State    string `json:"state"`
-	Hops     []Hop  `json:"hop"`
-	Price    int    `json:"price"`
-	Currency string `json:"currency"`
+type Hop struct {
+	HopID       string `json:"hopId"` // set by R when sending buy
+	Price       int    `json:"price"`
+	Currency    string `json:"currency"`
+	Origin      string `json:"origin"`
+	Destination string `json:"destination"`
 }
 
-type Hop struct {
-	LegId string `json:"leg"`
-	State string `json:"state"`
+type Courier struct {
+	Name string ``
+	Hops []Hop
 }
 
 type Pickup struct {
 	Message  string `json:"message"`
-	ParcelId string `json:"parcelId"`
+	ParcelID string `json:"parcelID"`
+	HopID    string `json:"hopId"`
 }
 
 type PickupReply struct {
