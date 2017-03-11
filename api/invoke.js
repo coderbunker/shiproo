@@ -26,7 +26,7 @@ chain.setMemberServicesUrl("grpc://" + caAddr, grpcOpts);
 console.log("Setting peer address to grpcs://" + peerAddrs);
 peerAddrs.map((a) => chain.addPeer("grpc://" + a, grpcOpts));
 
-function invoke(username, enroll) {
+function invoke(username, enroll, fcn, args) {
 	return chain.getUser(username)
 		.then((user) => {
 			return pify(user).enroll(enroll).then(e => user)
@@ -35,8 +35,8 @@ function invoke(username, enroll) {
 			// Construct the query request
 			var invokeRequest = {
 				chaincodeID: CHAINCODE_ID,
-				fcn: "login",
-				args: ["shipper1", "s1"]
+				fcn: fcn,
+				args: args
 			};
 
 			return new Promise((resolve, reject) => {

@@ -7,7 +7,7 @@
             "registrar": "test_user0",
             "enroll": "MS9qrN8hFjlE",
             "users": [
-                "shuyu"
+                {"username": "shuyu", "password": "shuyu" }
             ],
             "peers": ["localhost:7051"],
             "keyValStore": "/tmp/keyvalstore-lenovo",
@@ -19,7 +19,7 @@
             "registrar": "sfexpress-admin",
             "enroll": "sfexpresspassword",
             "users": [
-                "abhishek"
+                {"username": "abhishek", "password": "abhishek" }
             ],
             "peers": ["localhost:8051"],
             "keyValStore": "/tmp/keyvalstore-sfexpress",
@@ -31,7 +31,7 @@
             "registrar": "fedex-admin",
             "enroll": "fedexpassword",
             "users": [
-                "dmitry"
+                {"username": "dmitry", "password": "dmitry" }
             ],
             "peers": ["localhost:9051"],
             "keyValStore": "/tmp/keyvalstore-fedex",
@@ -43,7 +43,7 @@
             "registrar": "google-admin",
             "enroll": "googlepassword",
             "users": [
-                "ricky"
+                {"username": "ricky", "password": "ricky" }
             ],
             "peers": ["localhost:10051"],
             "keyValStore": "/tmp/keyvalstore-google",
