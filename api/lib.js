@@ -13,9 +13,9 @@ function loadJson(jsonPath) {
 function loadQuery(name, values) {
     const query = loadJsonText(path.join(__dirname, 'fixtures', `${name}.json`))
     const modified = query
-        .replace('\$USERNAME', values.username)
-        .replace('\$AFFILIATION', values.affiliation)
-        .replace('\$UUID', uuidV4())
+        .replace('$USERNAME', values.username)
+        .replace('$AFFILIATION', values.affiliation)
+        .replace('$UUID', uuidV4())
     return JSON.parse(modified)
 }
 

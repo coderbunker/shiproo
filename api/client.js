@@ -26,10 +26,13 @@ const ws = new WebSocket('ws://localhost:6666')
 ws.on('open', function open() {
     const config = lib.loadJson(path.join(__dirname, 'fixtures', `${AFFILIATION}.json`))
     ws.on('message', (m) => {
-        console.log(m)
+        console.log(m.toString())
     })
     config.forEach((c)=> {
-        const query = lib.loadQueryText(c.query, orgConfig.users[0])
+        const query = lib.loadQueryText(c.query, {
+            username: orgConfig.users[0].username,
+            affiliation: orgConfig.affiliation,
+        })
         console.log(query)
         ws.send(query)
     })
