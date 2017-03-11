@@ -26,37 +26,37 @@ chain.setMemberServicesUrl("grpc://" + caAddr, grpcOpts);
 console.log("Setting peer address to grpcs://" + peerAddrs);
 peerAddrs.map((a) => chain.addPeer("grpc://" + a, grpcOpts));
 
-chain.getUser('test_user0')
-	.then((user) => {
-		return pify(user).enroll('MS9qrN8hFjlE').then(e => user)
-	})
-	.then((user) => {
-		// Construct the query request
-		var invokeRequest = {
-			chaincodeID: CHAINCODE_ID,
-			fcn: "login",
-			args: ["shipper1", "s1"]
-		};
-
-		return new Promise((resolve, reject) => {
-			user
-				.invoke(invokeRequest)
-				.on('submitted', (e) => {
-					console.log('submitted!')
-				})
-				.on('complete', (e) => {
-					console.log('completed!')
-					resolve(JSON.stringify(e))
-				})
-				.on('error', (e) => {
-					console.log('rejected!')
-					reject(e)
-				})
+function invoke(username, enroll) {
+	return chain.getUser(username)
+		.then((user) => {
+			return pify(user).enroll(enroll).then(e => user)
 		})
-	})
-	.then((result) => {
-		console.log(result)
-	})
-	.catch((err) => {
-		console.error(err)
-	});
+		.then((user) => {
+			// Construct the query request
+			var invokeRequest = {
+				chaincodeID: CHAINCODE_ID,
+				fcn: "login",
+				args: ["shipper1", "s1"]
+			};
+
+			return new Promise((resolve, reject) => {
+				user
+					.invoke(invokeRequest)
+					.on('submitted', (e) => {
+						console.log('submitted!')
+					})
+					.on('complete', (e) => {
+						console.log('completed!')
+						resolve(JSON.stringify(e))
+					})
+					.on('error', (e) => {
+						console.log('rejected!')
+						reject(e)
+					})
+			})
+		})
+}
+
+module.exports = {
+	invoke
+}

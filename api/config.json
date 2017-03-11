@@ -1,0 +1,54 @@
+{
+    "chaincodeID": "648eda427f4d148ab6f07f85535294311db9ace121066f046e764e3e381a52966f0a5344443b02d509580d557aade5cb03bed1c8b347a815266330d65c170c74",
+    "orgs": [
+        {
+            "name": "Lenovo",
+            "affiliation": "lenovo",
+            "registrar": "test_user0",
+            "enroll": "MS9qrN8hFjlE",
+            "users": [
+                "shuyu"
+            ],
+            "peers": ["localhost:7051"],
+            "keyValStore": "/tmp/keyvalstore-lenovo",
+            "memberSrvc": "localhost:7054"
+        },
+        {
+            "name": "SFExpress",
+            "affiliation": "sfexpress",
+            "registrar": "sfexpress-admin",
+            "enroll": "sfexpresspassword",
+            "users": [
+                "abhishek"
+            ],
+            "peers": ["localhost:8051"],
+            "keyValStore": "/tmp/keyvalstore-sfexpress",
+            "memberSrvc": "localhost:7054"
+        },
+        {
+            "name": "Fedex",
+            "affiliation": "fedex",
+            "registrar": "fedex-admin",
+            "enroll": "fedexpassword",
+            "users": [
+                "dmitry"
+            ],
+            "peers": ["localhost:9051"],
+            "keyValStore": "/tmp/keyvalstore-fedex",
+            "memberSrvc": "localhost:7054"
+        },
+        {
+            "name": "Google",
+            "affiliation": "google",
+            "registrar": "google-admin",
+            "enroll": "googlepassword",
+            "users": [
+                "ricky"
+            ],
+            "peers": ["localhost:10051"],
+            "keyValStore": "/tmp/keyvalstore-google",
+            "memberSrvc": "localhost:7054"
+
+        }
+    ]
+}
