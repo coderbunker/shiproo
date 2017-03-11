@@ -1,6 +1,6 @@
 {
     "message": "buyRoute",
-    "routeId": "$TRANSACTION_ID",
+    "routeId": "$UUID",
     "payment": 100,
     "currency": "USD"
 }

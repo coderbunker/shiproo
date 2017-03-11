@@ -5,9 +5,9 @@
         "TRANSACTION_ID": {
             "state": "PROPOSED",
             "hops": [
-                {"leg": "$TRANSACTION_ID", "state": "PLANNED"}, 
-                {"leg": "$TRANSACTION_ID", "state": "PLANNED"}, 
-                {"leg": "$TRANSACTION_ID", "state": "PLANNED"}, 
+                {"leg": "$UUID", "state": "PLANNED"}, 
+                {"leg": "$UUID", "state": "PLANNED"}, 
+                {"leg": "$UUID", "state": "PLANNED"}, 
             ],
             "price": 100,
             "currency": "USD"

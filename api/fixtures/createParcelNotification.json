@@ -1,4 +1,4 @@
 {
     "message": "createParcelNotification",
-    "parcelId": "TRANSACTION_ID"
+    "parcelId": "$UUID"
 }
