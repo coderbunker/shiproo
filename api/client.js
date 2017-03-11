@@ -15,19 +15,13 @@ if(!USERNAME) {
 }
 console.log(USERNAME)
 
-function loadQuery(name) {
-    const query = lib.loadJsonText(path.join(__dirname, 'fixtures', `${name}.json`))
-    return JSON.stringify(JSON.parse(query.replace('$USERNAME', USERNAME)))
-}
-
-
 ws.on('open', function open() {
-    const config = lib.loadJson(path.join(__dirname, 'fixtures', `${USERNAME}.json`)) 
+    const config = lib.loadJson(path.join(__dirname, 'fixtures', `${USERNAME}.json`))
     ws.on('message', (m) => {
         console.log(m)
     })
     config.forEach((c)=> {
-        const query = loadQuery(c.query)
+        const query = lib.loadQueryText(c.query)
         console.log(query)
         ws.send(query)
     })
