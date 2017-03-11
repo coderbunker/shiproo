@@ -10,6 +10,7 @@ type Login struct {
 	Message  string `json:"message"`
 	UserName string `json:"username"`
 	Password string `json:"password"`
+	Token    string `json:"token,omitempty"`
 }
 
 type LogingReply struct {
@@ -17,11 +18,12 @@ type LogingReply struct {
 }
 
 type CreateParcel struct {
-	Message  string            `json:"message"`
-	Shipper  string            `json:"shipper"`
-	Receiver string            `json:"receiver"`
-	Parcel   map[string]string `json:"parcel"`
-	Customs  map[string]string `json:"customs"`
+	Message  string                 `json:"message"`
+	Shipper  string                 `json:"shipper"`
+	Receiver string                 `json:"receiver"`
+	Parcel   map[string]interface{} `json:"parcel"`
+	Customs  map[string]string      `json:"customs"`
+	ParcelID string                 `json:"parcelId"`
 }
 
 type CreateParcelReply struct {

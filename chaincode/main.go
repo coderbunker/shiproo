@@ -8,6 +8,7 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/pborman/uuid"
 )
 
 type chain struct {
@@ -40,7 +41,7 @@ func get(stub shim.ChaincodeStubInterface, item interface{}, key string) error {
 func (o *chain) Init(stub shim.ChaincodeStubInterface, function string, args []string) (ret []byte, err error) {
 	spew.Dump("init")
 	logins := []Login{
-		{UserName: "shuyu", Password: "shuyu"},
+		{UserName: "shuyu", Password: "shuyu", Token: "0"},
 	}
 	put(stub, logins, "logins")
 	parcels := []CreateParcel{}
@@ -49,9 +50,9 @@ func (o *chain) Init(stub shim.ChaincodeStubInterface, function string, args []s
 	put(stub, routes, "routes")
 	pickups := []Pickup{}
 	put(stub, pickups, "pickups")
-
 	return
 }
+
 func (o *chain) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) (ret []byte, err error) {
 	spew.Dump(function)
 	switch function {
@@ -68,6 +69,7 @@ func (o *chain) Invoke(stub shim.ChaincodeStubInterface, function string, args [
 	}
 	return
 }
+
 func (o *chain) Query(stub shim.ChaincodeStubInterface, function string, args []string) (ret []byte, err error) {
 	spew.Dump(stub)
 	return
@@ -83,6 +85,7 @@ func main() {
 func handleLogin(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
 	var logins []Login
 	get(stub, &logins, "logins")
+
 	spew.Dump(args)
 
 	var lx Login
@@ -103,8 +106,11 @@ func handleLogin(stub shim.ChaincodeStubInterface, args []string) (ret []byte, e
 		spew.Dump(err)
 		return
 	}
-	spew.Dump("found:", login)
-	ret, err = json.Marshal(LogingReply{Token: "XXX"})
+	login.Token = uuid.NewUUID().String()
+	if err = put(stub, logins, "logins"); err != nil {
+		return
+	}
+	spew.Dump("loggedin:", login)
 	return
 }
 
@@ -120,10 +126,7 @@ func handleCreateParcel(stub shim.ChaincodeStubInterface, args []string) (ret []
 	}
 
 	parcels = append(parcels, parcel)
-	if err = put(stub, parcels, "parcels"); err != nil {
-		return
-	}
-	ret, err = json.Marshal(CreateParcelReply{ParcelID: "YYY"})
+	err = put(stub, parcels, "parcels")
 	return
 }
 
@@ -137,6 +140,7 @@ func handleFindRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byt
 		spew.Dump(err)
 		return
 	}
+	// find parcel
 
 	ret, err = json.Marshal(FindRouteReply{Routes: routes})
 	return
