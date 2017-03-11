@@ -15,6 +15,15 @@ var peerAddrs = process.env.SDK_PEER_ADDRESS
 	? process.env.SDK_PEER_ADDRESS
 	: [`${PEER_SERVER}:7051`] ;
 
+
+var eventHubAddr = process.env.SDK_EVENTHUB_ADDRESS
+	? process.env.SDK_EVENTHUB_ADDRESS
+	: `${PEER_SERVER}:7053` ;
+ 
+
+process.on('exit', function (){
+  chain.eventHubDisconnect();
+});
 const grpcOpts = {}
 
 var chain = pify(hfc.newChain(CHAINCODE_ID));
@@ -25,6 +34,19 @@ chain.setMemberServicesUrl("grpc://" + caAddr, grpcOpts);
 
 console.log("Setting peer address to grpcs://" + peerAddrs);
 peerAddrs.map((a) => chain.addPeer("grpc://" + a, grpcOpts));
+
+chain.eventHubConnect("grpc://" + eventHubAddr);
+
+process.on('exit', function (){
+  chain.eventHubDisconnect();
+});
+
+// register for chaincode event with wildcard event name
+var regid = eh.registerChaincodeEvent(testChaincodeID, ".*", function(event) {
+	console.log(event.payload.toString())
+});
+
+var eh = chain.getEventHub();
 
 function getUser(username, enroll) {
 	 return chain.getUser(username)
