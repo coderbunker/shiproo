@@ -1,0 +1,16 @@
+{
+
+    message: "findRouteReply",
+    routes: {
+        $ROUTE_ID: {
+            state: "PROPOSED",
+            hops: [
+                {leg: "$TRANSACTION_ID", state: "PLANNED"}, 
+                {leg: "$TRANSACTION_ID", state: "PLANNED"}, 
+                {leg: "$TRANSACTION_ID", state: "PLANNED"}, 
+            ],
+            price: 100,
+            currency: "USD"
+        }
+    }
+}

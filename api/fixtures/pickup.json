@@ -1,0 +1,4 @@
+{
+    message: "pickup",
+    parcelId: "TRANSACTION_ID"
+}

@@ -1,0 +1,4 @@
+{
+    message: "pickupNotification",
+    routeId: "TRANSACTION_ID"
+}

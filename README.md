@@ -56,6 +56,7 @@ we set the channel to be associated to this USERNAME
 
 ```
 {
+    message: "loginReply"
     token: "...."
 }
 ```
@@ -74,7 +75,7 @@ create a parcel
         orderId,
         pickupAddress,
         destinationAddress
-        size[x,y,z],
+        size[Length, Width, Height],
         weigth[g],
     },
     customs: {
@@ -88,15 +89,16 @@ returns:
 
 ```
 {
+    message: "createParcelReply",
     parcelId: "TRANSACTION_ID"
 }
 ```
 
-separetely, on the receiver side, notification
+separetely, on the receiver side, notifications can be 
 
 ```
 {
-    message: "parcelNotification",
+    message: "parcelCreateNotification",
     parcelId: "TRANSACTION_ID"
 }
 ```
@@ -157,7 +159,23 @@ change state the route as ACTIVE
 ```
 {
     message: "pickup",
-    parcelId: PARCEL_ID
+    parcelId: "TRANSACTION_ID"
+}
+```
+
+
+```
+{
+    message: "pickupReply",
+    reply: "CONFIRMED"
+}
+```
+
+
+```
+{
+    message: "pickupNotification",
+    routeId: "TRANSACTION_ID"
 }
 ```
 
