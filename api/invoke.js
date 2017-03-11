@@ -7,19 +7,18 @@ var CHAINCODE_ID = 'hc'
 
 const PEER_SERVER = 'd00bd00b.local'
 
-var caAddr   = process.env.SDK_MEMBERSRVC_ADDRESS
+const caAddr   = process.env.SDK_MEMBERSRVC_ADDRESS
 	? process.env.SDK_MEMBERSRVC_ADDRESS
 	: `${PEER_SERVER}:7054` ;
 
-var peerAddrs = process.env.SDK_PEER_ADDRESS
+const peerAddrs = process.env.SDK_PEER_ADDRESS
 	? process.env.SDK_PEER_ADDRESS
 	: [`${PEER_SERVER}:7051`] ;
 
-
-var eventHubAddr = process.env.SDK_EVENTHUB_ADDRESS
+const eventHubAddr = process.env.SDK_EVENTHUB_ADDRESS
 	? process.env.SDK_EVENTHUB_ADDRESS
 	: `${PEER_SERVER}:7053` ;
- 
+
 
 process.on('exit', function (){
   chain.eventHubDisconnect();
@@ -36,17 +35,21 @@ console.log("Setting peer address to grpcs://" + peerAddrs);
 peerAddrs.map((a) => chain.addPeer("grpc://" + a, grpcOpts));
 
 chain.eventHubConnect("grpc://" + eventHubAddr);
-
 process.on('exit', function (){
   chain.eventHubDisconnect();
 });
 
-// register for chaincode event with wildcard event name
-var regid = eh.registerChaincodeEvent(testChaincodeID, ".*", function(event) {
-	console.log(event.payload.toString())
-});
 
-var eh = chain.getEventHub();
+// TODO: get this to work
+// function events() {
+// 	const eh = chain.getEventHub()
+// 	// not handling errors well: https://jira.hyperledger.org/browse/FAB-1507
+// 	// register for chaincode event with wildcard event name
+// 	var regid = eh.registerChaincodeEvent(CHAINCODE_ID, ".*", function(event) {
+// 		console.log(event.payload.toString())
+// 	});
+// }
+
 
 function getUser(username, enroll) {
 	 return chain.getUser(username)
@@ -78,6 +81,8 @@ function invoke(user, fcn, args) {
 			.on('complete', (results) => {
 				console.log('completed!')
 				resolve(txid)
+  				chain.eventHubDisconnect();
+
 			})
 			.on('error', (e) => {
 				console.log('rejected!')
