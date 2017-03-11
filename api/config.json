@@ -14,7 +14,7 @@
             "memberSrvc": "localhost:7054"
         },
         {
-            "name": "SFExpress",
+            "name": "SF Express",
             "affiliation": "sfexpress",
             "registrar": "sfexpress-admin",
             "enroll": "sfexpresspassword",
@@ -48,7 +48,6 @@
             "peers": ["localhost:10051"],
             "keyValStore": "/tmp/keyvalstore-google",
             "memberSrvc": "localhost:7054"
-
         }
     ]
 }

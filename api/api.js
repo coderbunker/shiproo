@@ -20,6 +20,17 @@ const connectionState = {
 
 const wss = new WebSocket.Server({ port: 6666 });
 
+wss.broadcast = function broadcast(data) {
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(data);
+    }
+  });
+};
+
+wss.broadcastJson = (json) => {
+    wss.broadcast(JSON.stringify(json))
+}
 wss.on('connection', function connection(ws) {
     const state = {
         username: null,
@@ -31,22 +42,25 @@ wss.on('connection', function connection(ws) {
     }
 
     ws.sendDebug = (str) => {
-        console.log(`REPLYING: ${str}`)
+        console.log(`REPLYING(${state.username}): ${str}`)
         ws.send(str)
     }
 
     ws.sendError = (err) => {
-        console.error(`ERROR: ${err.stack}`)
-        ws.send(errorMessage(str))
+        if(err.stack)
+            console.error(`ERROR(${state.username}): ${err.stack}`)
+        else
+            console.error(`ERROR(${state.username}): ${err}`)
+        ws.send(errorMessage(err))
     }
 
     ws.sendJson = (json) => {
-        console.error(`REPLYING: ${JSON.stringify(json)}`)
+        console.error(`REPLYING(${state.username}): ${JSON.stringify(json)}`)
         ws.send(JSON.stringify(json))
     }
 
     ws.on('message', (msg) => {
-        console.log(`username: ${state.username} RECEIVING: ${msg}`);
+        console.log(`RECEIVING(${state.username}): ${msg}`);
         const msgObject = JSON.parse(msg)
         if(!msgObject.message) {
             return ws.sendDebug(errorMessage('invalid message: no message field specified'))
@@ -108,6 +122,10 @@ wss.on('connection', function connection(ws) {
                             parcelId: query.parcelId,
                             txId: txId
                         });
+                        wss.broadcastJson({
+                            "message": "createParcelNotification",
+                            "parcelId": query.parcelId
+                        })
                     })
                     .catch((err) => {
                         return ws.sendError(err)

@@ -15,10 +15,7 @@ invoke.getUser(orgConfig.registrar, orgConfig.enroll)
     })
     .then((result) => console.log(result))
     .then(() => {
-        return invoke.invoke(
-            registrar,
-            'createParcel',  
-            lib.loadQuery('createParcel', orgConfig.users[0].username))
+  
     })
     .then((result) => console.log(result))
     .catch((err) => {

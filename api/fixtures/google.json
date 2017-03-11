@@ -1,0 +1,27 @@
+[
+    {
+        "query": "login",
+        "expect": "loginReply"
+    },
+    {
+        "wait": "createParcelNotification"
+    },
+    {
+        "query": "findRoute",
+        "expect": "findRouteReply"
+    },
+    {
+        "query": "buyRoute",
+        "expect": "buyRouteReply"
+    },
+    {
+        "wait": "pickupNotication"
+    },
+    {
+        "wait": "pickupNotication"
+    },
+    {
+        "query": "pickup",
+        "expect": "pickupReply"
+    }
+]

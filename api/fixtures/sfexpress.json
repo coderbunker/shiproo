@@ -1,0 +1,9 @@
+[
+    {
+        "wait": "buyRouteNotification"
+    },
+    {
+        "query": "pickup",
+        "expect": "pickupReply"
+    }
+]
