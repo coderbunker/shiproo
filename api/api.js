@@ -4,7 +4,7 @@ const WebSocket = require('ws');
 const path = require('path')
 
 //const invoke = require('./invoke.js')
-const invoke = require('./invokeTest.js')
+const invoke = require('./hyperledgerFake.js')
 const config = require('./config.json')
 const lib = require('./lib.js')
 

@@ -1,6 +1,6 @@
 'use strict'
 
-const invoke = require('./invoke.js')
+const invoke = require('./hyperledger.js')
 const config = require('./config.json')
 const lib = require('./lib.js')
 
