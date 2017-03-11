@@ -1,13 +1,13 @@
 [
     {
-        "query": "login",
+        "invoke": "login",
         "expect": "loginReply"
     },
     {
         "wait": "pickupNotication"
     },
     {
-        "query": "pickup",
+        "invoke": "pickup",
         "expect": "pickupReply"
     }
 ]

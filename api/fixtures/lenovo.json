@@ -1,10 +1,14 @@
 [
     {
-        "query": "login",
+        "invoke": "login",
         "expect": "loginReply"
     },
     {
-        "query": "createParcel",
+        "poll": "logins",
+        "expect": ["abhishek","dmitry","ricky","shuyu"]
+    }, 
+    {
+        "invoke": "createParcel",
         "expect": "createParcelReply"
     }
 ]

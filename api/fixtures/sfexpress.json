@@ -1,9 +1,13 @@
 [
     {
+        "invoke": "login",
+        "expect": "loginReply"
+    },
+    {
         "wait": "buyRouteNotification"
     },
     {
-        "query": "pickup",
+        "invoke": "pickup",
         "expect": "pickupReply"
     }
 ]

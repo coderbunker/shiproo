@@ -1,17 +1,17 @@
 [
     {
-        "query": "login",
+        "invoke": "login",
         "expect": "loginReply"
     },
     {
         "wait": "createParcelNotification"
     },
     {
-        "query": "findRoute",
+        "invoke": "findRoute",
         "expect": "findRouteReply"
     },
     {
-        "query": "buyRoute",
+        "invoke": "buyRoute",
         "expect": "buyRouteReply"
     },
     {
@@ -21,7 +21,7 @@
         "wait": "pickupNotication"
     },
     {
-        "query": "pickup",
+        "invoke": "pickup",
         "expect": "pickupReply"
     }
 ]

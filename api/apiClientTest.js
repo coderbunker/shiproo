@@ -28,33 +28,70 @@ const ws = new WebSocket('ws://localhost:6666')
 ws.on('open', function open() {
     const config = lib.loadJson(path.join(__dirname, 'fixtures', `${AFFILIATION}.json`))
     ws.on('message', (m) => {
-        console.log(m.toString())
+        console.log(`${AFFILIATION}: ${m.toString()}`)
     })
     config.reduce((p, c) => {
-        if(c.query) {
+        if(c.invoke) {
             return p.then(() => {
-                const query = lib.loadQueryText(c.query, {
+                const invoke = lib.loadQueryText(c.invoke, {
                     username: orgConfig.users[0].username,
                     affiliation: orgConfig.affiliation,
                 })
-                console.log(query)
-                ws.send(query)
+                ws.send(invoke)
             })
         }
 
         if(c.wait) {
             return p.then(() => {
                 return new Promise((resolve, reject) => {
-                    ws.once('message', (m) => {
+                    const callback = (m) => {
                         if(JSON.parse(m).message === c.wait) {
+                            ws.removeListener('message', callback)
                             resolve(m)
                         }
-                    })
+                    }
+                    ws.on('message', callback)
                     ws.once('error', (e) => {
                         reject(e)
                     })
                 })
             })  
         }
+
+        if(c.poll) {
+            return p.then(() => {
+                return new Promise((resolve, reject) => {
+                    var t
+                    ws.on('message', (m) => {
+                        const mObject = JSON.parse(m)
+                        const currentResults = JSON.stringify(mObject.results)
+                        const expectedResults = JSON.stringify(c.expect)
+                        if(mObject.message === c.poll) {
+                            if( currentResults === expectedResults) {
+                                console.log(`${currentResults} MATCHES ${expectedResults}`)
+                                if(t) {
+                                    clearInterval(t)
+                                }
+                                resolve(m)
+                            } else {
+                                console.log(`${currentResults} does not match ${expectedResults}`)
+                                if(!t) {
+                                    t = setInterval(() => ws.send(JSON.stringify({message: 'logins'})), 5000) 
+                                }
+                            }
+                        }
+                    })
+
+                    ws.once('error', (e) => {
+                        reject(e)
+                    })
+
+                    ws.send(JSON.stringify({message: 'logins'}))
+                })
+            })  
+        }
+
+        return Promise.reject(`Unsupported script: ${JSON.stringify(c)}`)
+
     }, Promise.resolve())
 });

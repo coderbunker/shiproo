@@ -3,13 +3,14 @@
 const uuid = require('uuid/v4');
 
 const users = {}
+const registrars = {}
 const transactions = {}
 const CHAINCODE_ID = 'testchain'
 
 function getUser(username, enroll) {
-	if(!users[username])
-		users[username] = 'enrolled'
-	return Promise.resolve(users[username])
+	if(!registrars[username])
+		registrars[username] = 'enrolled'
+	return Promise.resolve(registrars[username])
 }
 
 function invoke(user, fcn, args) {
@@ -23,10 +24,27 @@ function invoke(user, fcn, args) {
 	};
 	const txId = uuid()
 	transactions[txId] = invokeRequest
+	switch(fcn) {
+		case 'login':
+			users[args.username] = 'loggedIn'
+			break;
+		default:
+			break;
+	}
 	return Promise.resolve(txId)
+}
+
+function query(user, rowId) {
+	switch(rowId) {
+		case 'logins':
+			return Promise.resolve(Object.keys(users).sort())
+		default:
+			return Promise.reject(`unsupported ledger rowId: ${rowId}`)
+	}
 }
 
 module.exports = {
 	invoke,
-	getUser
+	getUser,
+	query
 }

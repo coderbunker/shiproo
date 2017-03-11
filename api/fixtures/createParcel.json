@@ -2,17 +2,13 @@
     "message": "createParcel",
     "shipper": "lenovo",
     "receiver": "google",
-    "parcel": {
-        "parcelId": "$UUID",
-        "orderId": "order1",
-        "pickupAddress": "Xuhui, Shanghai, PRC",
-        "destinationAddress": "Mountain View, California, USA",
-        "size": [61,46,46],
-        "weigth": 5000
-    },
-    "customs": {
-     "manifest": "Lenovo X220i laptop",
-     "declaredValue": "500",
-     "currency": "USD"
-    }
+    "parcelId": "$UUID",
+    "orderId": "order1",
+    "pickupAddress": "Xuhui, Shanghai, PRC",
+    "destinationAddress": "Mountain View, California, USA",
+    "size": [61,46,46],
+    "weight": 5000,
+    "manifest": "Lenovo X220i laptop",
+    "declaredValue": "500",
+    "currency": "USD"
 }

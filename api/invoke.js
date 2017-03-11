@@ -61,7 +61,6 @@ function invoke(user, fcn, args) {
 	const argsString =  JSON.stringify(args)
 	console.log(`invoking fnc ${fcn} with args ${argsString}`)
 
-	// Construct the query request
 	var invokeRequest = {
 		chaincodeID: CHAINCODE_ID,
 		fcn: fcn,
@@ -79,7 +78,7 @@ function invoke(user, fcn, args) {
 			.on('complete', (results) => {
 				console.log('completed!')
 				resolve(txid)
-  				chain.eventHubDisconnect();
+  				//chain.eventHubDisconnect();
 
 			})
 			.on('error', (e) => {
@@ -87,10 +86,38 @@ function invoke(user, fcn, args) {
 				reject(e)
 			})
 	})
+}
 
+function query(user, rowId) {
+	const argsString =  JSON.stringify(args)
+
+	var queryRequest = {
+		chaincodeID: CHAINCODE_ID,
+		fcn: 'query',
+		args: [rowId]
+	};
+
+	return new Promise((resolve, reject) => {
+		var txid;
+		user
+			.query(queryRequest)
+			.on('submitted', (results) => {
+				console.log(`submitted query`)
+			})
+			.on('complete', (results) => {
+				console.log('query completed!')
+				resolve(results)
+
+			})
+			.on('error', (e) => {
+				console.log('query rejected!')
+				reject(e)
+			})
+	})
 }
 
 module.exports = {
 	invoke,
-	getUser
+	getUser,
+	query
 }
