@@ -258,54 +258,11 @@ tbody:hover tr:hover td {
 			    <tr>
 			      <th>Option</th>
 			      <th>Routers</th>
+			      <th>Time</th>
+			      <th>Price</th>
 			    </tr>
 			  </thead>
-			  <tbody>
-			    <tr>
-			      <td><strong>showSpeed</strong></td>
-			      
-			      <td>The speed of the show/reveal</td>
-			    </tr>
-			    <tr>
-			      <td><strong>showEasing</strong></td>
-			      
-			      <td>The easing of the show/reveal</td>
-			    </tr>
-			    <tr>
-			      <td><strong>hideSpeed</strong></td>
-			      
-			      <td>The speed of the hide/conceal</td>
-			    </tr>
-			    <tr>
-			      <td><strong>hideEasing</strong></td>
-			     
-			      <td>The easing of the hide/conceal</td>
-			    </tr>					
-			    <tr>
-			      <td><strong>width</strong></td>
-			      
-			      <td>The width that the data will be truncated to - <em>('auto' or px amount)</em></td>
-			    </tr>
-			    <tr>
-			      <td><strong>ellipsis</strong></td>
-			     
-			      <td>Set to true to enable the ellipsis</td>
-			    </tr>
-			    <tr>
-			      <td><strong>title</strong></td>
-			      
-			      <td>Set to true to show the full data on hover</td>
-			    </tr>
-			    <tr>
-			      <td><strong>afterShow</strong></td>
-			      
-			      <td>The callback fired after the show/reveal</td>
-			    </tr>
-			    <tr>
-			      <td><strong>afterHide</strong></td>
-			      
-			      <td>The callback fired after the hide/conceal</td>
-			    </tr>
+			  <tbody id="options">
 			  </tbody>
 			</table>
 		</div>
@@ -315,6 +272,7 @@ tbody:hover tr:hover td {
 	</div>	
 </div>
 <script src="assets/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
 <script>
 $(function() { 
     // Toggle Nav on Click
@@ -332,5 +290,21 @@ function toggleNav() {
         $('#outer-wrapper').addClass('show-nav');
     }
 }
+
+    $(function() {
+
+
+   var people = [];
+
+   $.getJSON('people.json', function(data) {
+       $.each(data.person, function(i, f) {
+          var tblRow = "<tr>" + "<td>" + f.firstName + "</td>" +
+           "<td>" + f.lastName + "</td>" + "<td>" + f.job + "</td>" + "<td>" + f.roll + "</td>" + "</tr>"
+           $(tblRow).appendTo("tbody");
+     });
+
+   });
+
+});
 </script>
 </body>
