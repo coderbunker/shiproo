@@ -1,6 +1,7 @@
 'use strict'
 
 const uuid = require('uuid/v4');
+const lib = require('./lib.js');
 
 const users = {}
 const registrars = {}
@@ -38,6 +39,8 @@ function query(user, rowId) {
 	switch(rowId) {
 		case 'logins':
 			return Promise.resolve(Object.keys(users).sort())
+		case 'routes':
+			return Promise.resolve(lib.loadQuery('queryRouteReply', {}))
 		default:
 			return Promise.reject(`unsupported ledger rowId: ${rowId}`)
 	}

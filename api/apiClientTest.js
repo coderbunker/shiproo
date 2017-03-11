@@ -25,10 +25,13 @@ if(!orgConfig) {
 
 const ws = new WebSocket('ws://localhost:6666')
 
+function log(str) {
+    console.log(`${AFFILIATION}: ${str}`)
+}
 ws.on('open', function open() {
     const config = lib.loadJson(path.join(__dirname, 'fixtures', `${AFFILIATION}.json`))
     ws.on('message', (m) => {
-        console.log(`${AFFILIATION}: ${m.toString()}`)
+        log(`${m.toString()}`)
     })
     config.reduce((p, c) => {
         if(c.invoke) {
@@ -37,6 +40,7 @@ ws.on('open', function open() {
                     username: orgConfig.users[0].username,
                     affiliation: orgConfig.affiliation,
                 })
+                log(`invoking ${c.invoke}: ${invoke}`)
                 ws.send(invoke)
             })
         }
@@ -45,9 +49,13 @@ ws.on('open', function open() {
             return p.then(() => {
                 return new Promise((resolve, reject) => {
                     const callback = (m) => {
-                        if(JSON.parse(m).message === c.wait) {
+                        const mObj = JSON.parse(m)
+                        if(mObj.message === c.wait) {
+                            log(`${mObj.message} received, next step`)
                             ws.removeListener('message', callback)
                             resolve(m)
+                        } else {
+                            log(`'${mObj.message}' ignored, still waiting for ${c.wait}`)                            
                         }
                     }
                     ws.on('message', callback)
@@ -62,25 +70,28 @@ ws.on('open', function open() {
             return p.then(() => {
                 return new Promise((resolve, reject) => {
                     var t
-                    ws.on('message', (m) => {
+                    const callback = (m) => {
                         const mObject = JSON.parse(m)
                         const currentResults = JSON.stringify(mObject.results)
                         const expectedResults = JSON.stringify(c.expect)
                         if(mObject.message === c.poll) {
                             if( currentResults === expectedResults) {
-                                console.log(`${currentResults} MATCHES ${expectedResults}`)
+                                log(`${currentResults} MATCHES ${expectedResults}`)
                                 if(t) {
                                     clearInterval(t)
                                 }
+                                ws.removeListener('message', callback)
                                 resolve(m)
                             } else {
-                                console.log(`${currentResults} does not match ${expectedResults}`)
+                                log(`${currentResults} does not match ${expectedResults}`)
                                 if(!t) {
                                     t = setInterval(() => ws.send(JSON.stringify({message: 'logins'})), 5000) 
                                 }
                             }
                         }
-                    })
+                    }
+
+                    ws.on('message', callback)
 
                     ws.once('error', (e) => {
                         reject(e)
@@ -91,7 +102,17 @@ ws.on('open', function open() {
             })  
         }
 
+        if(c.debug) {
+            return p.then(() => {
+                log(c.debug)
+                return Promise.resolve()
+            })
+        }
+
         return Promise.reject(`Unsupported script: ${JSON.stringify(c)}`)
 
     }, Promise.resolve())
+    .catch((err) => {
+        console.error(err)
+    })
 });

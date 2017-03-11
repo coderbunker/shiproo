@@ -15,10 +15,10 @@
         "expect": "buyRouteReply"
     },
     {
-        "wait": "pickupNotication"
+        "wait": "pickupNotification"
     },
     {
-        "wait": "pickupNotication"
+        "wait": "pickupNotification"
     },
     {
         "invoke": "pickup",

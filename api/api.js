@@ -71,77 +71,147 @@ wss.on('connection', function connection(ws) {
         }
         switch(msgObject.message) {
             case 'login':
-            if(!msgObject.username || !msgObject.affiliation || !msgObject.password) {
-                return ws.sendError('login needs the following properties: username, affiliation, password')
-            }
-            state.orgConfig = config.orgs.find((f) => f.affiliation === msgObject.affiliation)
-            if(!state.orgConfig) {
-                return ws.sendError(`config not found for affiliation ${msgObject.affiliation}`)
-            }
-            state.username = msgObject.username
-            
-            var registrarPromise;
-            if(!state.registrar) {
-                registrarPromise = invoke.getUser(
-                state.orgConfig.registrar, 
-                state.orgConfig.enroll)
-            } else {
-                registrarPromise = Promise.resolve(state.registrar)
-            }
-            registrarPromise
-            .then((registrar) => {
-                return invoke.invoke(registrar, 'login', msgObject)
-            })
-            .then((txId) => {
-                ws.sendJson({
-                    "message": "loginReply",
-                    "token": msgObject.username,
-                    "txId": txId
-                });
-            })
-            .catch((err) => {
-                return ws.sendError(err)
-            })
-            break;
+                if(!msgObject.username || !msgObject.affiliation || !msgObject.password) {
+                    return ws.sendError('login needs the following properties: username, affiliation, password')
+                }
+                state.orgConfig = config.orgs.find((f) => f.affiliation === msgObject.affiliation)
+                if(!state.orgConfig) {
+                    return ws.sendError(`config not found for affiliation ${msgObject.affiliation}`)
+                }
+                state.username = msgObject.username
+                
+                var registrarPromise;
+                if(!state.registrar) {
+                    registrarPromise = invoke.getUser(
+                        state.orgConfig.registrar, 
+                        state.orgConfig.enroll)
+                } else {
+                    registrarPromise = Promise.resolve(state.registrar)
+                }
+                registrarPromise
+                    .then((registrar) => {
+                        return invoke.invoke(registrar, 'login', msgObject)
+                    })
+                    .then((txId) => {
+                        ws.sendJson({
+                            "message": "loginReply",
+                            "token": msgObject.username,
+                            "txId": txId
+                        });
+                    })
+                    .catch((err) => {
+                        return ws.sendError(err)
+                    })
+                break;
             
             case 'createParcel':
-            if(!msgObject.parcelId) {
-                return ws.sendError('createParcel needs the following properties: parcelId')
-            }
-            state.parcels[msgObject.parcelId] = 'PENDING'
-            invoke.invoke(
-            state.registrar,
-            'createParcel',
-            msgObject)
-            .then((txId) => {
-                ws.sendJson({
-                    message: "createParcelReply",
-                    reply: "PENDING",
-                    parcelId: msgObject.parcelId,
-                    txId: txId
-                });
-                wss.broadcastJson({
-                    "message": "createParcelNotification",
-                    "parcelId": msgObject.parcelId
-                })
-            })
-            .catch((err) => {
-                return ws.sendError(err)
-            })
-            break;
+                if(!msgObject.parcelId) {
+                    return ws.sendError('createParcel needs the following properties: parcelId')
+                }
+                state.parcels[msgObject.parcelId] = 'PENDING'
+                invoke.invoke(
+                    state.registrar,
+                    'createParcel',
+                    msgObject)
+                    .then((txId) => {
+                        ws.sendJson({
+                            message: "createParcelReply",
+                            reply: "PENDING",
+                            parcelId: msgObject.parcelId,
+                            txId: txId
+                        });
+                        wss.broadcastJson({
+                            "message": "createParcelNotification",
+                            "parcelId": msgObject.parcelId
+                        })
+                    })
+                    .catch((err) => {
+                        return ws.sendError(err)
+                    })
+                    break;
             
             case 'logins': 
-            invoke.query(
-            state.registrar,
-            'logins'
-            )
-            .then((results) => {
-                ws.sendJson({message: 'logins', results: results})
-            })
-            break;
+                invoke.query(
+                        state.registrar,
+                        'logins'
+                    )
+                    .then((results) => {
+                        ws.sendJson({message: 'logins', results: results})
+                    })
+                    .catch((err) => {
+                        return ws.sendError(err)
+                    })
+                break;
+
+            case 'findRoute':
+                if(!msgObject.parcelId) {
+                    return ws.sendError('findRoute needs the following properties: parcelId')
+                }
+                invoke.query(
+                        state.registrar,
+                        'routes',
+                        msgObject.parcelId
+                    )
+                    .then((results) => {
+                        ws.sendJson({message: 'routes', results: results})
+                    })
+                    .catch((err) => {
+                        return ws.sendError(err)
+                    })
+                break;
             
+            case 'buyRoute':
+                if(!msgObject.parcelId) {
+                    return ws.sendError('buyRoute needs the following properties: parcelId')
+                }
+                invoke.invoke(
+                    state.registrar,
+                    'buyRoute',
+                    msgObject)
+                    .then((txId) => {
+                        state.parcels[msgObject.parcelId] = 'BUYING'
+                        ws.sendJson({
+                            message: "buyRouteReply",
+                            reply: "BUYING",
+                            parcelId: msgObject.parcelId,
+                            txId: txId
+                        });
+                        wss.broadcastJson({
+                            "message": "buyRouteNotification",
+                            "parcelId": msgObject.parcelId
+                        })
+                    })
+                    .catch((err) => {
+                        return ws.sendError(err)
+                    })
+                    break;
+            case 'pickup':
+                if(!msgObject.parcelId) {
+                    return ws.sendError('pickup needs the following properties: parcelId')
+                }
+                invoke.invoke(
+                    state.registrar,
+                    'pickup',
+                    msgObject)
+                    .then((txId) => {
+                        state.parcels[msgObject.parcelId] = 'TRANSIT'
+                        ws.sendJson({
+                            message: "pickupReply",
+                            reply: "TRANSIT",
+                            parcelId: msgObject.parcelId,
+                            txId: txId
+                        });
+                        wss.broadcastJson({
+                            "message": "pickupNotification",
+                            "parcelId": msgObject.parcelId
+                        })
+                    })
+                    .catch((err) => {
+                        return ws.sendError(err)
+                    })
+                    break;
             default:
-            return ws.sendError(`unsupported message: ${msgObject.message}`)
+                return ws.sendError(`unsupported message: ${msgObject.message}`)
         }
     });
 });

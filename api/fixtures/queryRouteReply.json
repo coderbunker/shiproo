@@ -1,0 +1,28 @@
+{
+   "route": [
+       {
+           "number": "1",
+           "hops": "Lenovo(SF Express)-Shanghai(SF Express)-San Francisco(UPS)-Google",
+           "time": "1day4h",
+           "price": "$8"
+       },
+       {
+           "number": "2",
+           "hops": "Lenovo(EMS)-Shanghai(EMS)-San Francisco(UPS)-Google",
+           "time": "2day9h",
+           "price": "$6"
+       },
+       {
+           "number": "3",
+           "hops": "Lenovo(DHL)-Shanghai(DHL)-San Francisco(DHL)-Google",
+           "time": "22h",
+           "price": "$10"
+       },
+       {
+           "number": "4",
+           "hops": "Lenovo(SF Express)-Shanghai(DHL)-San Francisco(DHL)-Google",
+           "time": "1day2h",
+           "price": "$9"
+       }
+   ]
+}
