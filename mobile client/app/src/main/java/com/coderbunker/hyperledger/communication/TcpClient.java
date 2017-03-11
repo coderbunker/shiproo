@@ -13,6 +13,11 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+
+/**
+ *
+ * credentials and ownership belongs to http://stackoverflow.com/questions/38162775/really-simple-tcp-client
+ * */
 public class TcpClient {
 
     public static final String SERVER_IP = App.SERVER_API;

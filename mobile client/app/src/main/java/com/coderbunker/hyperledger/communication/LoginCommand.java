@@ -22,4 +22,14 @@ public class LoginCommand extends Command {
     public void writeToParcel(Parcel dest, int flags) {
 
     }
+
+    @Override
+    public void execute() {
+
+    }
+
+    @Override
+    public void run() {
+
+    }
 }
