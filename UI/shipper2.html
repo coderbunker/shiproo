@@ -229,6 +229,9 @@ tbody:hover tr:hover td {
 	color: #444;
 	text-shadow: 0 1px 0 #fff;
 }
+.selected {
+    background-color: #808080;
+}
   </style>
 <body>
 <div id="outer-wrapper">
@@ -253,7 +256,7 @@ tbody:hover tr:hover td {
 			</ul>
 		</nav>
 		<div class="main">
-			<table>
+			<table id="table">
 			  <thead>
 			    <tr>
 			      <th>Option</th>
@@ -265,6 +268,7 @@ tbody:hover tr:hover td {
 			  <tbody id="options">
 			  </tbody>
 			</table>
+			<input type="button" id="tst" value="OK" onclick="fnselect()" />
 		</div>
 		<div class="footer">
       		<p class="footer1">Copyright © ShipRoo, All Rights Reserved.</p>    
@@ -291,20 +295,43 @@ function toggleNav() {
     }
 }
 
+
     $(function() {
 
 
    var people = [];
 
-   $.getJSON('people.json', function(data) {
-       $.each(data.person, function(i, f) {
-          var tblRow = "<tr>" + "<td>" + f.firstName + "</td>" +
-           "<td>" + f.lastName + "</td>" + "<td>" + f.job + "</td>" + "<td>" + f.roll + "</td>" + "</tr>"
+   $.getJSON('../api/fixtures/findRouteReply.json', function(data) {
+       $.each(data.route, function(i, f) {
+          var tblRow = "<tr>" + "<td>" + f.number + "</td>" +
+           "<td>" + f.hops + "</td>" + "<td>" + f.time + "</td>" + "<td>" + f.price + "</td>" + "</tr>"
            $(tblRow).appendTo("tbody");
      });
 
    });
 
+});
+
+function highlight(e) {
+    if (selected[0]) selected[0].className = '';
+    e.target.parentNode.className = 'selected';
+    
+}
+
+var table = document.getElementById('table'),
+    selected = table.getElementsByClassName('selected');
+table.onclick = highlight;
+
+function fnselect(){
+var $row=$(this).parent().find('td');
+    var clickeedID=$row.eq(0).text();
+   // alert(clickeedID);
+}
+
+$("#tst").click(function(){
+    var value =$(".selected td:first").html();
+    value = value || "No row Selected";
+    alert(value);
 });
 </script>
 </body>
