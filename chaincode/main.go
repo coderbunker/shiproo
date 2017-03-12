@@ -98,7 +98,7 @@ func (o *chain) Init(stub shim.ChaincodeStubInterface, function string, args []s
 }
 
 func (o *chain) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) (ret []byte, err error) {
-	spew.Dump(function)
+	spew.Dump("invoke", function)
 	switch function {
 	case "login":
 		return handleLogin(stub, args)
@@ -113,9 +113,9 @@ func (o *chain) Invoke(stub shim.ChaincodeStubInterface, function string, args [
 }
 
 func (o *chain) Query(stub shim.ChaincodeStubInterface, function string, args []string) (ret []byte, err error) {
-	spew.Dump(function)
+	spew.Dump("query:", function)
 	switch function {
-	case "queryRoute":
+	case "queryRoutes":
 		return queryRoute(stub, args)
 	case "queryLogins":
 		return queryLogins(stub, args)
