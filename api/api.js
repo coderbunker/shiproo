@@ -3,10 +3,11 @@
 const WebSocket = require('ws');
 const path = require('path')
 
+var invoke
 if(process.env.PRODUCTION) {
-    const invoke = require('./hyperledger.js')
+    invoke = require('./hyperledger.js')
 } else {
-    const invoke = require('./hyperledgerFake.js')
+    invoke = require('./hyperledgerFake.js')
 }
 const config = require('./config.json')
 const lib = require('./lib.js')

@@ -18,7 +18,7 @@ suggest nodemon for reloading changed files
 by default, runs using hyperledgerFake.js. to run against the blockchain:
 
 ```
-PRODUCTION=1 nodemon api.js
+PRODUCTION=1 node api.js
 ```
 
 ## client connection
