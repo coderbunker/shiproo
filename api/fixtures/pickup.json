@@ -1,4 +1,4 @@
 {
     "message": "pickup",
-    "parcelId": "$UUID"
+    "parcelId": "$PARCELID"
 }

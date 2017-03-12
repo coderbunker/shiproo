@@ -28,6 +28,7 @@ const ws = new WebSocket('ws://localhost:6666')
 function log(str) {
     console.log(`${AFFILIATION}: ${str}`)
 }
+
 ws.on('open', function open() {
     const config = lib.loadJson(path.join(__dirname, 'fixtures', `${AFFILIATION}.json`))
     ws.on('message', (m) => {

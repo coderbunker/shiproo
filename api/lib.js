@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const uuidV4 = require('uuid/v4');
+const sharedIds = require('./state.json')
 
 function loadJsonText(jsonPath) {
     return fs.readFileSync(jsonPath).toString()
@@ -17,6 +18,9 @@ function loadQuery(name, values) {
         .replace('$AFFILIATION', values.affiliation)
         .replace('$PASSWORD', values.password)
         .replace('$UUID', uuidV4())
+        .replace('$PARCELID', sharedIds.parcelId)
+        .replace('$ROUTEID', sharedIds.routeId)
+
     return JSON.parse(modified)
 }
 

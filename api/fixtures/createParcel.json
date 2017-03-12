@@ -2,7 +2,7 @@
     "message": "createParcel",
     "shipper": "lenovo",
     "receiver": "google",
-    "parcelId": "$UUID",
+    "parcelId": "$PARCELID",
     "orderId": "order1",
     "pickupAddress": "Xuhui, Shanghai, PRC",
     "destinationAddress": "Mountain View, California, USA",

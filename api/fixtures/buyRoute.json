@@ -1,7 +1,7 @@
 {
     "message": "buyRoute",
-    "routeId": "$UUID",
-    "parcelId": "$UUID",
+    "routeId": "$ROUTEID",
+    "parcelId": "$PARCELID",
     "payment": 100,
     "currency": "USD"
 }

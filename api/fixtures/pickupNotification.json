@@ -1,4 +1,4 @@
 {
     "message": "pickupNotification",
-    "routeId": "$UUID"
+    "routeId": "$ROUTEID"
 }
