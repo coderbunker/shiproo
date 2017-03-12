@@ -96,7 +96,7 @@ function query(user, rowId) {
 
 	var queryRequest = {
 		chaincodeID: CHAINCODE_ID,
-		fcn: 'query',
+		fcn: `query${rowId}`,
 		args: [rowId]
 	};
 

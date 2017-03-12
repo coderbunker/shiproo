@@ -25,6 +25,10 @@ PRODUCTION=1 node api.js
 
 connect to port 6666 or use apiClientTest.js
 
+## debugging
+
+
+
 ## Done so far
 
 Created a websocket API in api.js. that can process the following messages:
