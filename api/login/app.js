@@ -29,7 +29,9 @@
 
   let ws;
 
-   $('#wsButton').click(() => {
+   $('#wsButton').click((e) => {
+      e.preventDefault() // prevents the form from being submitted
+
      console.log('clicked wsButton')
     if (ws) {
       ws.onerror = ws.onopen = ws.onclose = null;
@@ -75,7 +77,8 @@
       : Promise.reject(new Error('Unexpected response'));
   };
 
-  $('#login').click(() => {
+  $('#login').click((e) => {
+      e.preventDefault() // prevents the form from being submitted
       ws.send(JSON.stringify({
         message: 'login', 
         username: 'shuyu', 
@@ -84,7 +87,8 @@
       }))
   });
 
-  $('#loginReceiver').click(() => {
+  $('#loginReceiver').click((e) => {
+      e.preventDefault() // prevents the form from being submitted
       ws.send(JSON.stringify({
         message: 'login', 
         username: 'ricky', 
@@ -93,11 +97,15 @@
       }))
   });
 
-  $('#createParcel').click(() => {
+  $('#createParcel').click((e) => {
+    e.preventDefault() // prevents the form from being submitted
+
     ws.send(JSON.stringify(parcel))
   });
 
-$('#queryRoute').click(() => {
+$('#queryRoute').click((e) => {
+    e.preventDefault() // prevents the form from being submitted
+
     ws.send(JSON.stringify({
       message: 'findRoute',
       parcelId: parcelId,
