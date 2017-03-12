@@ -10,8 +10,10 @@ npm install
 ## run
 
 ```
-nodemon api.js
+node api.js
 ```
+
+suggest nodemon for reloading changed files
 
 by default, runs using hyperledgerFake.js. to run against the blockchain:
 
