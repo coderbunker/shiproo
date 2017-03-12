@@ -46,8 +46,15 @@
             case 'findRouteReply':
               $('#routes').text(JSON.stringify(event.data))
               break;
+
             case 'loginReply':
-              $('#username').text(msgObj.token)
+              $('#username').text(`logged in as ${msgObj.token}`)
+              $('#parcelId').val(parcel.parcelId)
+              $('#shipper').val(parcel.shipper)
+              $('#pickupAddress').val(parcel.pickupAddress)
+              $('#destinationAddress').val(parcel.destinationAddress)
+              $('#size').val(parcel.size)
+              $('#weight').val(parcel.weight)
               break;
           }
       });
