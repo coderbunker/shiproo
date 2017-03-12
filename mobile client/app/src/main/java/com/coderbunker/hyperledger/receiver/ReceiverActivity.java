@@ -1,4 +1,4 @@
-package com.coderbunker.hyperledger.shipper;
+package com.coderbunker.hyperledger.receiver;
 
 
 import android.Manifest;
@@ -10,9 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +22,7 @@ import com.coderbunker.hyperledger.qrcode.QRCodeActivity;
 
 import org.json.JSONException;
 
-public class ShipperActivity extends AppCompatActivity {
+public class ReceiverActivity extends AppCompatActivity {
 
     private static final int EXTRA_CODE = 1000;
     private static final int CODE_SCAN_BARCODE = 1001;
@@ -59,10 +57,6 @@ public class ShipperActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(App.TAG, "activity onActivityResult");
-        if (RESULT_CANCELED == resultCode) {
-            return;
-        }
-
         info.setText(
                 BarcodeActivity.getCodeFromResult(data)
                         .getCode()

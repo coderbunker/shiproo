@@ -13,13 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.coderbunker.hyperledger.App;
+import com.coderbunker.hyperledger.qrcode.QRCodeActivity;
 import com.coderbunker.hyperledger.test.Mock;
 import com.coderbunker.hyperledger.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RouteFragment extends Fragment {
+public class RouteFragment extends Fragment implements RouteAdapter.IListener {
 
     private RecyclerView list;
     private RouteAdapter adapter;
@@ -32,20 +33,21 @@ public class RouteFragment extends Fragment {
         View view = inflater.inflate(R.layout.layout_route, container, false);
         Log.d(App.TAG, "Root fragment init");
 
-        submitButton = (Button) view.findViewById(R.id.submit);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(App.TAG, "Click on submit button");
-                // TODO save current item
-            }
-        });
+//        submitButton = (Button) view.findViewById(R.id.submit);
+//        submitButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d(App.TAG, "Click on submit button");
+//                // TODO save current item
+//            }
+//        });
 
         adapter = new RouteAdapter();
         list = (RecyclerView) view.findViewById(R.id.list);
         list.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         list.setHasFixedSize(true);
         list.setAdapter(adapter);
+        adapter.setListener(this);
         setData();
         return view;
     }
@@ -60,6 +62,16 @@ public class RouteFragment extends Fragment {
             );
         } catch (JSONException e) {
             Log.e(App.TAG, "Failed to set data", e);
+        }
+    }
+
+    @Override
+    public void onClick(Route route) {
+        Log.d(App.TAG, "CLick on route");
+        try {
+            QRCodeActivity.start(getContext(), route.getJson().toString());
+        } catch (JSONException e) {
+            Log.e(App.TAG, "Failed to get json", e);
         }
     }
 }

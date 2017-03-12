@@ -64,4 +64,17 @@ public class Route {
         );
         return route;
     }
+
+    public JSONObject getJson() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("cost", cost);
+        json.put("time", time);
+
+        JSONArray jsonCheckPoints = new JSONArray();
+        for (int idx = 0; idx < checkpoints.size(); idx++) {
+            jsonCheckPoints.put(checkpoints.get(idx));
+        }
+        json.put("checkpoints", jsonCheckPoints);
+        return json;
+    }
 }

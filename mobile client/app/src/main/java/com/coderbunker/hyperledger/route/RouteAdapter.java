@@ -19,6 +19,16 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
 
     private List<Route> model = new ArrayList<>();
 
+    public interface IListener {
+        void onClick(Route route);
+    }
+
+    private IListener listener;
+
+    public void setListener(IListener listener) {
+        this.listener = listener;
+    }
+
     public void updateModel(List<Route> data) {
         Log.d(App.TAG, "Update model");
         data.add(new Route()); // add one more item to be able to see the last item
@@ -35,11 +45,21 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Route route = model.get(position);
+        final Route route = model.get(position);
         holder.cost.setText(route.getCost());
         holder.time.setText(route.getTime());
         holder.route.setText(RouteService.getRoute(route.getCheckpoints()));
         Log.d(App.TAG, "onBindViewHolder call");
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener == null) {
+                    return;
+                }
+
+                listener.onClick(route);
+            }
+        });
     }
 
     @Override

@@ -13,16 +13,16 @@
         android:layout_height="wrap_content"
         />
 
-    <Button
-        android:id="@+id/submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="32dp"
-        android:elevation="4dp"
-        android:background="@color/colorPrimary"
-        android:textColor="@android:color/white"
-        android:text="@string/submit"
-        />
+    <!--<Button-->
+        <!--android:id="@+id/submit"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:layout_margin="32dp"-->
+        <!--android:elevation="4dp"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:text="@string/submit"-->
+        <!--/>-->
 
 </FrameLayout>
