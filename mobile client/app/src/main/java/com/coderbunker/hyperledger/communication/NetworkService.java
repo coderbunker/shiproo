@@ -19,6 +19,16 @@ import java.util.concurrent.TimeUnit;
 
 public class NetworkService extends Service {
 
+    private void processCommand(Intent intent) {
+        final Command command = intent.getParcelableExtra(EXTRA_COMMAND);
+        executor.submit(command, new Runnable() {
+            @Override
+            public void run() {
+                command.execute();
+            }
+        });
+    }
+
     public static final int NOTIFICATION_ID = 1000;
 
     public static String ACTION_START = "ACTION_START";
@@ -71,15 +81,6 @@ public class NetworkService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void processCommand(Intent intent) {
-        final Command command = intent.getParcelableExtra(EXTRA_COMMAND);
-        executor.submit(command, new Runnable() {
-            @Override
-            public void run() {
-                command.execute();
-            }
-        });
-    }
 
     private void processStartNotification() {
         // Do something. For example, fetch fresh data from backend to create a rich notification?

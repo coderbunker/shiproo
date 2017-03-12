@@ -12,6 +12,19 @@ public class Storage {
     private static final String LOCATION_TO = "LOCATION_TO";
     private static final String TOKEN = "TOKEN";
     private static final String TRANSACTION_ID = "TRANSACTION_ID";
+    private static final String LOGIN = "LOGIN";
+
+    public static void setLoginState(Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(LOGIN, true)
+                .apply();
+    }
+
+    public static boolean isLogin(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(LOGIN, false);
+    }
 
     public static void addLocation(Context context, Location location) {
         PreferenceManager.getDefaultSharedPreferences(context)

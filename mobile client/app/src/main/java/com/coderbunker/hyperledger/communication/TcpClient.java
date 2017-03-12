@@ -23,21 +23,21 @@ public class TcpClient {
     public static final String SERVER_IP = App.SERVER_API;
     public static final int SERVER_PORT = App.SERVER_PORT;
     // message to send to the server
-    private String mServerMessage;
+    private String serverMessage;
     // sends message received notifications
-    private OnMessageReceived mMessageListener = null;
+    private OnMessageReceived messageListener = null;
     // while this is true, the server will continue running
-    private boolean mRun = false;
+    private boolean run = false;
     // used to send messages
-    private PrintWriter mBufferOut;
+    private PrintWriter bufferOut;
     // used to read messages from the server
-    private BufferedReader mBufferIn;
+    private BufferedReader bufferIn;
 
     /**
      * Constructor of the class. OnMessagedReceived listens for the messages received from server
      */
     public TcpClient(OnMessageReceived listener) {
-        mMessageListener = listener;
+        messageListener = listener;
     }
 
     /**
@@ -46,9 +46,9 @@ public class TcpClient {
      * @param message text entered by client
      */
     public void sendMessage(String message) {
-        if (mBufferOut != null && !mBufferOut.checkError()) {
-            mBufferOut.println(message);
-            mBufferOut.flush();
+        if (bufferOut != null && !bufferOut.checkError()) {
+            bufferOut.println(message);
+            bufferOut.flush();
         }
     }
 
@@ -57,69 +57,43 @@ public class TcpClient {
      */
     public void stopClient() {
 
-        mRun = false;
+        run = false;
 
-        if (mBufferOut != null) {
-            mBufferOut.flush();
-            mBufferOut.close();
+        if (bufferOut != null) {
+            bufferOut.flush();
+            bufferOut.close();
         }
 
-        mMessageListener = null;
-        mBufferIn = null;
-        mBufferOut = null;
-        mServerMessage = null;
+        messageListener = null;
+        bufferIn = null;
+        bufferOut = null;
+        serverMessage = null;
     }
 
     public void run() {
-
-        mRun = true;
-
+        run = true;
         try {
-            //here you must put your computer's IP address.
             InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
-
-            Log.e(App.TAG, "C: Connecting...");
-
-            //create a socket to make the connection with the server
             Socket socket = new Socket(serverAddr, SERVER_PORT);
-
             try {
-
-                //sends the message to the server
-                mBufferOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-
-                //receives the message which the server sends back
-                mBufferIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-
-                //in this while the client listens for the messages sent by the server
-                while (mRun) {
-
-                    mServerMessage = mBufferIn.readLine();
-
-                    if (mServerMessage != null && mMessageListener != null) {
-                        //call the method messageReceived from MyActivity class
-                        mMessageListener.messageReceived(mServerMessage);
+                bufferOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                bufferIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                while (run) {
+                    serverMessage = bufferIn.readLine();
+                    if (serverMessage != null && messageListener != null) {
+                        messageListener.messageReceived(serverMessage);
                     }
-
                 }
-
-                Log.e(App.TAG, "S: Received Message: '" + mServerMessage + "'");
-
+                Log.e(App.TAG, "Received Message: '" + serverMessage + "'");
             } catch (Exception e) {
-
                 Log.e(App.TAG, "S: Error", e);
-
             } finally {
                 //the socket must be closed. It is not possible to reconnect to this socket
                 // after it is closed, which means a new socket instance has to be created.
                 socket.close();
             }
-
         } catch (Exception e) {
-
             Log.e(App.TAG, "C: Error", e);
-
         }
 
     }
