@@ -10,6 +10,8 @@
     messages.scrollTop = messages.scrollHeight;
   };
 
+  var parcelId = 'f45cea00-be82-47a3-a458-911280988114'
+
   let ws;
 
    $('#wsButton').click(() => {
@@ -63,8 +65,29 @@
   });
 
   $('#createParcel').click(() => {
-      ws.send(JSON.stringify({
-        message: 'createParcel', 
-      }))
+    ws.send(JSON.stringify({
+      message: 'createParcel',
+      username: 'shuyu',
+      shipper: 'lenovo',
+      receiver: 'google',
+      parcelId: parcelId,
+      orderId: "order1",
+      pickupAddress: "Xuhui, Shanghai, PRC",
+      destinationAddress: "Mountain View, California, USA",
+      size: "[61,46,46]",
+      weight: 5000,
+      manifest: "Lenovo X220i laptop",
+      declaredValue: "500",
+      currency: "USD"
+    }))
   });
+
+$('#queryRoute').click(() => {
+    ws.send(JSON.stringify({
+      message: 'queryRoute',
+      parcelId: parcelId,
+    }))
+})
+
 })();
+
