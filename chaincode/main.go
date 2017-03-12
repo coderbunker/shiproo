@@ -42,6 +42,9 @@ func (o *chain) Init(stub shim.ChaincodeStubInterface, function string, args []s
 	spew.Dump("init")
 	logins := []Login{
 		{UserName: "shuyu", Password: "shuyu", Token: "0"},
+		{UserName: "abhishek", Password: "abhishek", Token: "0"},
+		{UserName: "ricky", Password: "ricky", Token: "0"},
+		{UserName: "dmitry", Password: "dmitry", Token: "0"},
 	}
 	put(stub, logins, "logins")
 	parcels := []CreateParcel{}
