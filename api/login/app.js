@@ -53,6 +53,15 @@
       }))
   });
 
+  $('#loginReceiver').click(() => {
+      ws.send(JSON.stringify({
+        message: 'login', 
+        username: 'ricky', 
+        password: 'ricky',
+        affiliation: 'google'
+      }))
+  });
+
   $('#createParcel').click(() => {
       ws.send(JSON.stringify({
         message: 'createParcel', 
