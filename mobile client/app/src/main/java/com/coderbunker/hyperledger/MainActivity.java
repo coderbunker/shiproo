@@ -1,5 +1,6 @@
 package com.coderbunker.hyperledger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -14,7 +15,9 @@ import android.view.MenuItem;
 
 import com.coderbunker.hyperledger.parcel.ParcelDetailsFragment;
 import com.coderbunker.hyperledger.parcel.ParcelFragment;
+import com.coderbunker.hyperledger.qrcode.QRCodeActivity;
 import com.coderbunker.hyperledger.route.RouteFragment;
+import com.coderbunker.hyperledger.shipper.ShipperActivity;
 import com.coderbunker.hyperledger.test.TestFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -82,21 +85,19 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content, new ParcelFragment())
                     .commit();
         } else if (id == R.id.nav_gallery) {
+            Log.d(App.TAG, "nav_slideshow is called");
+            Intent intent = new Intent(this, ShipperActivity.class);
+            startActivity(intent);
+//            fm.beginTransaction()
+//                    .replace(R.id.content, new TestFragment())
+//                    .commit();
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
             Log.d(App.TAG, "nav_gallery is called");
             fm.beginTransaction()
                     .replace(R.id.content, new RouteFragment())
                     .commit();
-        } else if (id == R.id.nav_slideshow) {
-            Log.d(App.TAG, "nav_slideshow is called");
-            fm.beginTransaction()
-                    .replace(R.id.content, new TestFragment())
-                    .commit();
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
