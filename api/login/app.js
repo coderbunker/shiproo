@@ -112,5 +112,14 @@ $('#queryRoute').click((e) => {
     }))
 })
 
+$('#buyRoute').click((e) => {
+    e.preventDefault() // prevents the form from being submitted
+    ws.send(JSON.stringify({
+      message: 'buyRoute',
+      parcelId: parcelId,
+      routeId: routeId
+    }))
+})
+
 })();
 
