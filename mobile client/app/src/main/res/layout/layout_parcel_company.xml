@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="@string/testSendFrom"
+            android:text="@string/testShipperCompanyFrom"
             />
 
         <EditText
@@ -28,27 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:inputType="number"
-            android:text="@string/testSendTo"
-            />
-
-        <Spinner
-            android:id="@+id/size"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
-            android:inputType="number"
-            />
-
-        <EditText
-            android:id="@+id/weight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:inputType="number"
-            android:hint="@string/weight"
+            android:text="@string/testSendCompanyTo"
             />
 
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>

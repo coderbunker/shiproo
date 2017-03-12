@@ -36,7 +36,7 @@ public class LoginFragment extends Fragment {
                         pwd.getEditableText().toString()
                 );
                 Command command = new LoginCommand(user);
-                command.send();
+//                command.send();
             }
         });
         return view;

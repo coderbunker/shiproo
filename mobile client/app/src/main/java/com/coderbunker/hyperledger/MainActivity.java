@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.coderbunker.hyperledger.parcel.ParcelDetailsFragment;
 import com.coderbunker.hyperledger.parcel.ParcelFragment;
 import com.coderbunker.hyperledger.route.RouteFragment;
 import com.coderbunker.hyperledger.test.TestFragment;
