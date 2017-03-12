@@ -13,8 +13,11 @@ import android.widget.EditText;
 import com.coderbunker.hyperledger.App;
 import com.coderbunker.hyperledger.R;
 import com.coderbunker.hyperledger.Storage;
+import com.coderbunker.hyperledger.qrcode.QRCodeActivity;
 
-public class ParcelInsuranceFragment extends Fragment {
+import org.json.JSONException;
+
+public class ParcelInsuranceFragment extends Fragment implements IParcel {
 
     private EditText insurance;
 
@@ -28,13 +31,20 @@ public class ParcelInsuranceFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Log.d(App.TAG, "Update information about parcel");
-//                        Location location = new Location(
-//                                locationFrom.getText().toString(),
-//                                locationTo.getText().toString()
-//                        );
-//                        Storage.addLocation(v.getContext(), location);
+                        try {
+                            String json  = ParcelService.getInstance().getJson().toString();
+                            QRCodeActivity.start(getContext(), json);
+                        } catch (JSONException e) {
+                            Log.e(App.TAG, "Failed to obtain json", e);
+                        }
                     }
                 });
         return view;
+    }
+
+    @Override
+    public void updateParcelInfo() {
+        ParcelService parcelService = ParcelService.getInstance();
+        parcelService.setInsurance(insurance.getText().toString());
     }
 }

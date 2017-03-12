@@ -21,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
         if (Storage.isLogin(this)) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+            finish();
         } else {
             FragmentManager fm = getSupportFragmentManager();
             fm.beginTransaction()

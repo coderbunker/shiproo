@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+
     <EditText
         android:id="@+id/insurance"
         android:layout_width="match_parent"
@@ -12,6 +13,7 @@
         android:layout_margin="32dp"
         android:layout_gravity="center"
         android:inputType="number"
+        android:text="5000"
         />
 
 

@@ -37,6 +37,7 @@ public class QRCodeFragment extends Fragment {
         Fragment fragment = new QRCodeFragment();
         Bundle args = new Bundle();
         args.putString(JSON, json);
+        Log.d(App.TAG, "QR code passed to fragment: " + json);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,7 +46,8 @@ public class QRCodeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_qr_code, container, false);
-        init((ImageView) view.findViewById(R.id.imageView), getArguments().getString(JSON, ""));
+        Log.d(App.TAG, "QR code: " + getArguments().getString(JSON, ""));
+        init((ImageView) view.findViewById(R.id.qr_code), getArguments().getString(JSON, ""));
         return view;
     }
 

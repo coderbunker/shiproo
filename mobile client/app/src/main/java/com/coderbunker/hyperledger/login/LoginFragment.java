@@ -1,6 +1,7 @@
 package com.coderbunker.hyperledger.login;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.coderbunker.hyperledger.MainActivity;
 import com.coderbunker.hyperledger.R;
+import com.coderbunker.hyperledger.Storage;
 import com.coderbunker.hyperledger.communication.Command;
 import com.coderbunker.hyperledger.communication.LoginCommand;
 
@@ -30,15 +33,22 @@ public class LoginFragment extends Fragment {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO send data to the socket
                 User user = new User(
                         login.getText().toString(),
                         pwd.getEditableText().toString()
                 );
-                Command command = new LoginCommand(user);
-//                command.send();
+                // TODO send data to the socket
+                // TODO based on reply rune main activity and close this one activity
+                startMain();
             }
         });
         return view;
+    }
+
+    private void startMain() {
+        Storage.setLoginState(getContext());
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 }
