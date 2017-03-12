@@ -1,18 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-      <meta charset="utf-8">
-      <title>ShipRoo</title>
-  </head>
-  <body>
-    <h1>ShipRoo: Let's Hop!</h1>
-    <button id="login" type="button" title="Simulate login">
-      Login
-    </button>
-    <button id="wsButton" type="button" title="Open WebSocket connection">
-      Open WebSocket connection
-    </button>
-    <pre id="messages" style="height: 400px; overflow: scroll"></pre>
-    <script src="app.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <title>ShipRoo</title>
+  <link rel="stylesheet" href="assets/bootstrap.min.css" />
+  <link rel="stylesheet" href="assets/fa/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="shiproo.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="assets/jquery-3.1.1.min.js"></script>
+<body>
+<div id="outer-wrapper">
+	<div id="inner-wrapper">
+		<a href="#" class="toggle-nav btn btn-lg btn-success" id="toggle-menu"><i class="fa fa-bars"></i></a>
+		<header>
+			<img class="logo" src="http://i44.photobucket.com/albums/f9/Shuyu_Wu/FreightRooLogofinal_zpsb0ohrtxf.png" />
+			<br>
+		</header>
+		<nav id="nav" role="navigation">
+			<a href="#" class="toggle-nav">X</a>
+			<ul class="category">
+				<li>
+					<a href="#" class=><div class="aa"><i class="fa fa-user fa-2x"></i></div>Receiver</a>
+				</li>
+				<li>
+					<a href="#"><div class="aa"><i class="fa fa-user-o fa-2x"></i></div>Shipper</a>
+				</li>
+				<li class="function">
+					<a href="#"><div class="aa"><i class="fa fa-truck fa-2x"></i></div>Courier</a>
+				</li>
+			</ul>
+		</nav>
+		<div class="creating-page">
+  		<div class="form">
+				<form class="register-form">
+        <button id="wsButton" type="button" title="Open WebSocket connection">
+          Open WebSocket connection
+        </button>
+        <button id="login" type="button" title="Simulate login">
+          Login
+        </button>
+        </form>
+      </div>
+			<div class="form">
+				<form class="register-form">
+					<input type="text" placeholder="Order ID" />
+					<input type="text" placeholder="Shipper name" />
+					<input type="text" placeholder="Pickup address" />
+					<input type="text" placeholder="Destination address" />
+					<input type="text" placeholder="size(x,y,z)" />
+					<input type="text" placeholder="weight(kg)" />
+					<button id="createParcel">Create a parcel</button>
+				</form>
+			</div>
+      <pre id="messages" style="height: 400px; overflow: scroll"></pre>
+		</div>
+		<div class="footer">
+      		<p class="footer1">Copyright © ShipRoo, All Rights Reserved.</p>    
+  		</div>
+	</div>	
+</div>
+<script src="assets/jquery-3.1.1.min.js"></script>
+<script>
+$(function() { 
+    // Toggle Nav on Click
+    $('.toggle-nav').click(function() {
+        // Calling a function in case you want to expand upon this.
+        toggleNav();
+    });
+});
+function toggleNav() {
+    if ($('#outer-wrapper').hasClass('show-nav')) {
+        // Do things on Nav Close
+        $('#outer-wrapper').removeClass('show-nav');
+    } else {
+        // Do things on Nav Open
+        $('#outer-wrapper').addClass('show-nav');
+    }
+}
+</script>
+<script src="app.js"></script>
+</body>
 </html>

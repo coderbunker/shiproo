@@ -1,9 +1,9 @@
 /* global fetch, WebSocket, location */
 (() => {
   const messages = document.querySelector('#messages');
-  const wsButton = document.querySelector('#wsButton');
-  const logout = document.querySelector('#logout');
-  const login = document.querySelector('#login');
+  // const logout = document.querySelector('#logout');
+  const login = $('#login');
+  const wsButton = $('#wsButton');
 
   const showMessage = (message) => {
     messages.textContent += `\n${message}`;
@@ -12,7 +12,8 @@
 
   let ws;
 
-  wsButton.onclick = () => {
+   $('#wsButton').click(() => {
+     console.log('clicked wsButton')
     if (ws) {
       ws.onerror = ws.onopen = ws.onclose = null;
       ws.close();
@@ -35,7 +36,7 @@
     }
     ws.onclose = () => showMessage('WebSocket connection closed');
 
-  };
+  });
 
   const handleResponse = (response) => {
     return response.ok
@@ -43,19 +44,18 @@
       : Promise.reject(new Error('Unexpected response'));
   };
 
-  login.onclick = () => {
+  $('#login').click(() => {
       ws.send(JSON.stringify({
         message: 'login', 
         username: 'shuyu', 
         password: 'shuyu',
         affiliation: 'lenovo'
       }))
-  };
+  });
 
-  logout.onclick = () => {
-    fetch('/logout', { method: 'DELETE', credentials: 'same-origin' })
-      .then(handleResponse)
-      .then(showMessage)
-      .catch((err) => showMessage(err.message));
-  };
+  $('#createParcel').click(() => {
+      ws.send(JSON.stringify({
+        message: 'createParcel', 
+      }))
+  });
 })();
