@@ -6,6 +6,8 @@ import (
 
 	"encoding/json"
 
+	"time"
+
 	"github.com/davecgh/go-spew/spew"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/pborman/uuid"
@@ -115,7 +117,10 @@ func (o *chain) Query(stub shim.ChaincodeStubInterface, function string, args []
 	switch function {
 	case "queryRoute":
 		return queryRoute(stub, args)
+	case "queryLogins":
+		return queryLogins(stub, args)
 	}
+
 	return
 }
 
@@ -151,10 +156,18 @@ func handleLogin(stub shim.ChaincodeStubInterface, args []string) (ret []byte, e
 		return
 	}
 	login.Token = uuid.NewUUID().String()
+	login.LasLogin = time.Now()
 	if err = put(stub, logins, "logins"); err != nil {
 		return
 	}
 	spew.Dump("loggedin:", login)
+	return
+}
+
+func queryLogins(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
+	var logins []Login
+	get(stub, &logins, "logins")
+	ret, err = json.Marshal(QueryLoginReply{Logins: logins})
 	return
 }
 

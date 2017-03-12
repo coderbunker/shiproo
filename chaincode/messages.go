@@ -1,5 +1,9 @@
 package main
 
+import (
+	"time"
+)
+
 type Legstate int
 
 const (
@@ -7,14 +11,20 @@ const (
 )
 
 type Login struct {
-	Message  string `json:"message"`
-	UserName string `json:"username"`
-	Password string `json:"password"`
-	Token    string `json:"token,omitempty"`
+	Message  string    `json:"message"`
+	UserName string    `json:"username"`
+	Password string    `json:"password"`
+	Token    string    `json:"token,omitempty"`
+	LasLogin time.Time `json:"lastLogin"`
 }
 
 type LogingReply struct {
 	Token string `json:"token"`
+}
+
+type QueryLoginReply struct {
+	Message string  `json:"message"`
+	Logins  []Login `json:"logins"`
 }
 
 type Parcel struct {
