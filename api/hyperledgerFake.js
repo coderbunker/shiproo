@@ -9,8 +9,9 @@ const transactions = {}
 const CHAINCODE_ID = 'testchain'
 
 function getUser(username, enroll) {
-	if(!registrars[username])
+	if(!registrars[username]) {
 		registrars[username] = 'enrolled'
+	}
 	return Promise.resolve(registrars[username])
 }
 

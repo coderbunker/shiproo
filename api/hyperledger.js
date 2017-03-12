@@ -52,8 +52,9 @@ peerAddrs.map((a) => chain.addPeer("grpc://" + a, grpcOpts));
 function getUser(username, enroll) {
 	 return chain.getUser(username)
 		.then((user) => {
-			user.setTCertBatchSize(1)
-			return pify(user).enroll(enroll).then(e => user)
+			var registrar = user
+			//user.setTCertBatchSize(1)
+			return pify(user).enroll(enroll).then(e => registrar)
 		})
 }
 
@@ -89,7 +90,9 @@ function invoke(user, fcn, args) {
 }
 
 function query(user, rowId) {
-	const argsString =  JSON.stringify(args)
+	if(!user) {
+		return Promise.reject('query: User (registrar) parameter is required')
+	}
 
 	var queryRequest = {
 		chaincodeID: CHAINCODE_ID,

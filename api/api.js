@@ -74,6 +74,7 @@ wss.on('connection', function connection(ws) {
         if(!state.username && msgObject.message != 'login') {
             return ws.sendError('login first using login message!')
         }
+
         switch(msgObject.message) {
             case 'login':
                 if(!msgObject.username || !msgObject.affiliation || !msgObject.password) {
@@ -95,7 +96,11 @@ wss.on('connection', function connection(ws) {
                 }
                 registrarPromise
                     .then((registrar) => {
-                        return invoke.invoke(registrar, 'login', msgObject)
+                        if(!registrar) {
+                            throw new Error('Expecting registrar from getUser, failed')
+                        }
+                        state.registrar = registrar
+                        return invoke.invoke(state.registrar, 'login', msgObject)
                     })
                     .then((txId) => {
                         ws.sendJson({
@@ -133,9 +138,9 @@ wss.on('connection', function connection(ws) {
                     .catch((err) => {
                         return ws.sendError(err)
                     })
-                    break;
+                break;
             
-            case 'logins': 
+            case 'logins':
                 invoke.query(
                         state.registrar,
                         'logins'
@@ -215,6 +220,7 @@ wss.on('connection', function connection(ws) {
                         return ws.sendError(err)
                     })
                     break;
+
             default:
                 return ws.sendError(`unsupported message: ${msgObject.message}`)
         }

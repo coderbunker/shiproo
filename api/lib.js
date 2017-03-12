@@ -15,6 +15,7 @@ function loadQuery(name, values) {
     const modified = query
         .replace('$USERNAME', values.username)
         .replace('$AFFILIATION', values.affiliation)
+        .replace('$PASSWORD', values.password)
         .replace('$UUID', uuidV4())
     return JSON.parse(modified)
 }

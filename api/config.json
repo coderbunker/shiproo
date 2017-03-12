@@ -4,8 +4,8 @@
         {
             "name": "Lenovo",
             "affiliation": "lenovo",
-            "registrar": "test_user0",
-            "enroll": "MS9qrN8hFjlE",
+            "registrar": "test_user4",
+            "enroll": "4nXSrfoYGFCP",
             "users": [
                 {"username": "shuyu", "password": "shuyu" }
             ],
@@ -16,8 +16,8 @@
         {
             "name": "SF Express",
             "affiliation": "sfexpress",
-            "registrar": "sfexpress-admin",
-            "enroll": "sfexpresspassword",
+            "registrar": "test_user5",
+            "enroll": "yg5DVhm0er1z",
             "users": [
                 {"username": "abhishek", "password": "abhishek" }
             ],
@@ -28,8 +28,8 @@
         {
             "name": "Fedex",
             "affiliation": "fedex",
-            "registrar": "fedex-admin",
-            "enroll": "fedexpassword",
+            "registrar": "test_user6",
+            "enroll": "b7pmSxzKNFiw",
             "users": [
                 {"username": "dmitry", "password": "dmitry" }
             ],
@@ -40,8 +40,8 @@
         {
             "name": "Google",
             "affiliation": "google",
-            "registrar": "google-admin",
-            "enroll": "googlepassword",
+            "registrar": "test_user7",
+            "enroll": "YsWZD4qQmYxo",
             "users": [
                 {"username": "ricky", "password": "ricky" }
             ],

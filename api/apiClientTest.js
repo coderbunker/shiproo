@@ -39,6 +39,7 @@ ws.on('open', function open() {
                 const invoke = lib.loadQueryText(c.invoke, {
                     username: orgConfig.users[0].username,
                     affiliation: orgConfig.affiliation,
+                    password: orgConfig.users[0].password
                 })
                 log(`invoking ${c.invoke}: ${invoke}`)
                 ws.send(invoke)
