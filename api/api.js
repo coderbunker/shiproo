@@ -5,10 +5,10 @@ const path = require('path')
 
 var invoke
 if(process.env.PRODUCTION) {
-    console.log("RUNNING AS PRODUCTION")
+    console.log("API RUNNING AS PRODUCTION")
     invoke = require('./hyperledger.js')
 } else {
-    console.log("RUNNING AS TESTING")
+    console.log("API RUNNING AS TESTING")
     invoke = require('./hyperledgerFake.js')
 }
 const config = require('./config.json')
@@ -21,25 +21,25 @@ function errorMessage(errorString) {
     })
 }
 
-const connectionState = {
+var wss
+
+function setupWss(w) {
+    wss = w
+    wss.broadcast = function broadcast(data) {
+        console.log(`BROADCAST ${data}`)
+        wss.clients.forEach(function each(client) {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(data);
+            }
+        });
+    };
+
+    wss.broadcastJson = (json) => {
+        wss.broadcast(JSON.stringify(json))
+    }
 }
 
-const wss = new WebSocket.Server({ port: 6666 });
-
-wss.broadcast = function broadcast(data) {
-    console.log(`BROADCAST ${data}`)
-    wss.clients.forEach(function each(client) {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(data);
-        }
-    });
-};
-
-wss.broadcastJson = (json) => {
-    wss.broadcast(JSON.stringify(json))
-}
-
-wss.on('connection', function connection(ws) {
+function connection(ws) {
     const state = {
         username: null,
         registrar: null,
@@ -227,4 +227,18 @@ wss.on('connection', function connection(ws) {
                 return ws.sendError(`unsupported message: ${msgObject.message}`)
         }
     });
-});
+}
+
+if (require.main === module) {
+    console.log('API called directly');
+    const wss = new WebSocket.Server({ port: 6666 });
+    setupWss(wss)
+    wss.on('connection', connection);
+} else {
+    console.log('API required as a module');
+}
+
+module.exports = {
+    setupWss,
+    connection
+}
