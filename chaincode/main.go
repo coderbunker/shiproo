@@ -59,7 +59,14 @@ func (o *chain) Init(stub shim.ChaincodeStubInterface, function string, args []s
 				Price:       20,
 				Currency:    "CNY",
 				Origin:      "Lenovo",
-				Destination: "Shanghai",
+				Destination: "ShanghaiPudong",
+			},
+			Hop{
+				HopID:       uuid.NewUUID().String(),
+				Price:       30,
+				Currency:    "CNY",
+				Origin:      "Lenovo",
+				Destination: "ShanghaiHongQiao",
 			},
 		}}
 	c2 := Courier{
@@ -69,7 +76,14 @@ func (o *chain) Init(stub shim.ChaincodeStubInterface, function string, args []s
 				HopID:       uuid.NewUUID().String(),
 				Price:       30,
 				Currency:    "USD",
-				Origin:      "Shanghai",
+				Origin:      "ShanghaiPudong",
+				Destination: "SanFrancisco",
+			},
+			Hop{
+				HopID:       uuid.NewUUID().String(),
+				Price:       30,
+				Currency:    "USD",
+				Origin:      "ShanghaiHongQiao",
 				Destination: "SanFrancisco",
 			},
 		}}
@@ -154,6 +168,10 @@ func handleCreateParcel(stub shim.ChaincodeStubInterface, args []string) (ret []
 	return
 }
 
+var convertToCny = map[string]float64{
+	"CNY": 1, "USD": 6.92,
+}
+
 func queryRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
 	// pre declare routes, load them
 	var courier []Courier
@@ -172,12 +190,17 @@ func queryRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, er
 		return
 	}
 	// return all routes for now - TODO
-	hops := []Hop{}
-	for _, c := range courier {
-		hops = append(hops, c.Hops...)
-	}
-	routes := []Route{
-		{Hops: hops},
+	routes := []Route{}
+	// all couriers have same number of routes
+	nHops := len(courier[0].Hops)
+	for n := 0; n < nHops; n++ {
+		hops := []Hop{}
+		price := 0.0
+		for _, h := range courier[n].Hops {
+			price += h.Price * convertToCny[h.Currency]
+		}
+		hops = append(hops, courier[n].Hops...)
+		routes = append(routes, Route{Hops: hops, Currency: "CNY", Payment: price})
 	}
 	ret, err = json.Marshal(QueryRouteReply{Routes: routes})
 	return

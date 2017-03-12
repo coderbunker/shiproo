@@ -56,8 +56,8 @@ type QueryRouteReply struct {
 
 type Route struct {
 	Hops     []Hop
-	Payment  int    `json:"payment"`
-	Currency string `json:"currency"`
+	Payment  float64 `json:"payment"`
+	Currency string  `json:"currency"`
 }
 
 type BuyRoute struct {
@@ -72,11 +72,11 @@ type BuyRouteReply struct {
 }
 
 type Hop struct {
-	HopID       string `json:"hopId"` // set by R when sending buy
-	Price       int    `json:"price"`
-	Currency    string `json:"currency"`
-	Origin      string `json:"origin"`
-	Destination string `json:"destination"`
+	HopID       string  `json:"hopId"` // set by R when sending buy
+	Price       float64 `json:"price"`
+	Currency    string  `json:"currency"`
+	Origin      string  `json:"origin"`
+	Destination string  `json:"destination"`
 }
 
 type Courier struct {
