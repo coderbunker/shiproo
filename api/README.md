@@ -3,6 +3,7 @@
 ## install
 
 ```
+nvm use
 npm install
 ```
 
@@ -12,9 +13,15 @@ npm install
 nodemon api.js
 ```
 
+by default, runs using hyperledgerFake.js. to run against the blockchain:
+
+```
+PRODUCTION=1 nodemon api.js
+```
+
 ## client connection
 
-connect to port 6666
+connect to port 6666 or use apiClientTest.js
 
 ## Done so far
 

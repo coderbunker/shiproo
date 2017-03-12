@@ -3,8 +3,11 @@
 const WebSocket = require('ws');
 const path = require('path')
 
-//const invoke = require('./invoke.js')
-const invoke = require('./hyperledgerFake.js')
+if(process.env.PRODUCTION) {
+    const invoke = require('./hyperledger.js')
+} else {
+    const invoke = require('./hyperledgerFake.js')
+}
 const config = require('./config.json')
 const lib = require('./lib.js')
 
@@ -32,6 +35,7 @@ wss.broadcast = function broadcast(data) {
 wss.broadcastJson = (json) => {
     wss.broadcast(JSON.stringify(json))
 }
+
 wss.on('connection', function connection(ws) {
     const state = {
         username: null,
