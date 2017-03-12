@@ -31,13 +31,9 @@ func put(stub shim.ChaincodeStubInterface, item interface{}, key string) error {
 func get(stub shim.ChaincodeStubInterface, item interface{}, key string) error {
 	ljs, err := stub.GetState(key)
 	if err != nil {
-		spew.Dump(err)
 		return err
 	}
-	if err = json.Unmarshal(ljs, item); err != nil {
-		spew.Dump(err)
-	}
-	return err
+	return json.Unmarshal(ljs, item)
 }
 
 func (o *chain) Init(stub shim.ChaincodeStubInterface, function string, args []string) (ret []byte, err error) {
@@ -218,7 +214,7 @@ func queryRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, er
 
 	var fRoute QueryRoute
 	if err = json.Unmarshal([]byte(args[0]), &fRoute); err != nil {
-		spew.Dump(err)
+		spew.Dump("json", err)
 		return
 	}
 	// find parcel
@@ -253,27 +249,34 @@ func handleBuyRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte
 	spew.Dump(args)
 	var bRoute BuyRoute
 	if err = json.Unmarshal([]byte(args[0]), &bRoute); err != nil {
-		spew.Dump(err)
+		spew.Dump("json", err)
 		return
 	}
+	spew.Dump("route", bRoute)
 	// find parcel
 	var parcel CreateParcel
 	if err = get(stub, &parcel, bRoute.ParcelID); err != nil {
 		spew.Dump(err)
 		return
 	}
+	spew.Dump("parcel", parcel)
 	if parcel.ParcelID == "" {
 		err = errors.New("Parcel not found")
+		spew.Dump(err)
 		return
 	}
 	// find HOPS using routeId
 	var route Route
-	if err = get(stub, route, bRoute.RouteID); err != nil {
-		spew.Dump(err)
-		return nil, err
+	if err = get(stub, &route, bRoute.RouteID); err != nil {
+		spew.Dump("No route", err)
+		return
 	}
 	parcel.Parcel.Hops = route.Hops
-	err = put(stub, parcel, parcel.ParcelID)
+	spew.Dump("parcel + route", bRoute)
+	if err = put(stub, &parcel, parcel.ParcelID); err != nil {
+		spew.Dump("put", err)
+		return
+	}
 	spew.Dump("bought", parcel)
 	return
 }
