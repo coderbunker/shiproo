@@ -2,6 +2,7 @@
 
 const hfc = require('hfc');
 const pify = require('pify-proto');
+const path = require('path')
 
 var CHAINCODE_ID = 'hc'
 
@@ -25,7 +26,7 @@ process.on('exit', function (){
 const grpcOpts = {}
 
 var chain = pify(hfc.newChain(CHAINCODE_ID));
-chain.setKeyValStore(hfc.newFileKeyValStore( "/tmp/keyValStore"));
+chain.setKeyValStore(hfc.newFileKeyValStore(path.join(__dirname, "keyValStore")));
 
 console.log("Setting membersrvc address to grpc://" + caAddr);
 chain.setMemberServicesUrl("grpc://" + caAddr, grpcOpts);
