@@ -46,10 +46,35 @@ func (o *chain) Init(stub shim.ChaincodeStubInterface, function string, args []s
 	put(stub, logins, "logins")
 	parcels := []CreateParcel{}
 	put(stub, parcels, "parcels")
-	routes := []Route{}
-	put(stub, routes, "routes")
 	pickups := []Pickup{}
 	put(stub, pickups, "pickups")
+	c1 := Courier{
+		Name: "SFexpress",
+		Hops: []Hop{
+			Hop{
+				HopID:       uuid.NewUUID().String(),
+				Price:       20,
+				Currency:    "CNY",
+				Origin:      "Lenovo",
+				Destination: "Shanghai",
+			},
+		}}
+	c2 := Courier{
+		Name: "FedEx",
+		Hops: []Hop{
+			Hop{
+				HopID:       uuid.NewUUID().String(),
+				Price:       30,
+				Currency:    "USD",
+				Origin:      "Shanghai",
+				Destination: "SanFrancisco",
+			},
+		}}
+	courier := []Courier{
+		c1, c2,
+	}
+	put(stub, courier, "couriers")
+
 	return
 }
 
@@ -128,8 +153,8 @@ func handleCreateParcel(stub shim.ChaincodeStubInterface, args []string) (ret []
 
 func queryRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
 	// pre declare routes, load them
-	var routes []Route
-	get(stub, &routes, "routes")
+	var courier []Courier
+	get(stub, &courier, "courier")
 	spew.Dump(args)
 
 	var fRoute QueryRoute
@@ -144,6 +169,13 @@ func queryRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, er
 		return
 	}
 	// return all routes for now - TODO
+	hops := []Hop{}
+	for _, c := range courier {
+		hops = append(hops, c.Hops...)
+	}
+	routes := []Route{
+		{Hops: hops},
+	}
 	ret, err = json.Marshal(QueryRouteReply{Routes: routes})
 	return
 }
@@ -161,11 +193,8 @@ func handleBuyRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte
 		spew.Dump(err)
 		return
 	}
-	// for each hop in route, create a Leg
-	for _, hop := range bRoute.Route.Hops {
-		put(stub, hop, hop.HopID)
-		spew.Dump("saved hop", hop)
-	}
+	parcel.Parcel.Hops = bRoute.Route.Hops
+	err = put(stub, parcel, parcel.ParcelID)
 	return
 }
 
@@ -181,7 +210,16 @@ func handlePickup(stub shim.ChaincodeStubInterface, args []string) (ret []byte, 
 		spew.Dump(err)
 		return
 	}
-
+	found := false
+	for i, h := range parcel.Parcel.Hops {
+		if h.HopID == pickup.HopID {
+			found = true
+		}
+		parcel.Parcel.CurrentHop = i
+	}
+	if !found {
+		err = errors.New("Hop not found for parcel")
+	}
 	return
 }
 

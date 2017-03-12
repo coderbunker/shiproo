@@ -37,27 +37,27 @@ type CreateParcel struct {
 	ParcelID string            `json:"parcelId"` // passed by R
 }
 
-type QueryRoute struct {
-	Message  string `json:"message"`
-	ParcelID string `json:"parcelId"` // passed by R
-}
-type QueryRouteReply struct {
-	Message string `json:"message"`
-	Routes  []Route
-}
-
-type Route struct {
-	Hops     []Hop
-	Payment  int    `json:"payment"`
-	Currency string `json:"currency"`
-}
-
 type CreateParcelReply struct {
 	ParcelID string `json:"parcelId"`
 }
 
 type ParcelNotification struct {
 	Message string `json:"message"`
+}
+
+type QueryRoute struct {
+	Message  string `json:"message"`
+	ParcelID string `json:"parcelId"` // passed by R
+}
+type QueryRouteReply struct {
+	Message string  `json:"message"`
+	Routes  []Route `json:"routes"`
+}
+
+type Route struct {
+	Hops     []Hop
+	Payment  int    `json:"payment"`
+	Currency string `json:"currency"`
 }
 
 type BuyRoute struct {
@@ -80,8 +80,8 @@ type Hop struct {
 }
 
 type Courier struct {
-	Name string ``
-	Hops []Hop
+	Name string `json:"name"`
+	Hops []Hop  `json:"hops"`
 }
 
 type Pickup struct {
