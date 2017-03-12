@@ -66,14 +66,17 @@ type QueryRouteReply struct {
 
 type Route struct {
 	Hops     []Hop
+	RouteID  string  `json:"routeId"`
 	Payment  float64 `json:"payment"`
 	Currency string  `json:"currency"`
 }
 
 type BuyRoute struct {
-	Message  string `json:"message"`
-	ParcelID string `json:"parcelID"`
-	Route    Route
+	Message  string  `json:"message"`
+	ParcelID string  `json:"parcelId"`
+	RouteID  string  `json:"routeId"`
+	Payment  float64 `json:"payment"`
+	Currency string  `json:"currency"`
 }
 
 type BuyRouteReply struct {

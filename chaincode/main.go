@@ -89,11 +89,37 @@ func (o *chain) Init(stub shim.ChaincodeStubInterface, function string, args []s
 				Destination: "SanFrancisco",
 			},
 		}}
-	courier := []Courier{
+	couriers := []Courier{
 		c1, c2,
 	}
-	put(stub, courier, "couriers")
+	put(stub, couriers, "couriers")
 
+	// create routes
+	// return all routes for now - TODO
+	routes := []string{}
+	// all couriers have same number of routes
+	nHops := len(couriers[0].Hops)
+	for n := 0; n < nHops; n++ {
+		hops := []Hop{}
+		for _, courier := range couriers {
+			hops = append(hops, courier.Hops[n])
+		}
+		price := 0.0
+		for _, h := range hops {
+			price += h.Price * convertToCny[h.Currency]
+		}
+		route := Route{
+			Hops:     hops,
+			RouteID:  uuid.NewUUID().String(),
+			Currency: "CNY",
+			Payment:  price,
+		}
+		// write route
+		put(stub, route, route.RouteID)
+		spew.Dump("route", route)
+		routes = append(routes, route.RouteID)
+	}
+	put(stub, routes, "routes")
 	return
 }
 
@@ -115,7 +141,7 @@ func (o *chain) Invoke(stub shim.ChaincodeStubInterface, function string, args [
 func (o *chain) Query(stub shim.ChaincodeStubInterface, function string, args []string) (ret []byte, err error) {
 	spew.Dump("query:", function)
 	switch function {
-	case "queryRoutes":
+	case "queryroutes":
 		return queryRoute(stub, args)
 	case "queryLogins":
 		return queryLogins(stub, args)
@@ -172,12 +198,14 @@ func queryLogins(stub shim.ChaincodeStubInterface, args []string) (ret []byte, e
 }
 
 func handleCreateParcel(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
+	spew.Dump(args)
 	var parcel CreateParcel
 	if err = json.Unmarshal([]byte(args[0]), &parcel); err != nil {
 		spew.Dump(err)
 		return
 	}
 	err = put(stub, parcel, parcel.ParcelID)
+	spew.Dump("created", parcel)
 	return
 }
 
@@ -186,9 +214,6 @@ var convertToCny = map[string]float64{
 }
 
 func queryRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
-	// pre declare routes, load them
-	var courier []Courier
-	get(stub, &courier, "courier")
 	spew.Dump(args)
 
 	var fRoute QueryRoute
@@ -202,25 +227,30 @@ func queryRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, er
 		spew.Dump(err)
 		return
 	}
+	if parcel.ParcelID == "" {
+		err = errors.New("Missing Parcels")
+	}
 	// return all routes for now - TODO
+	rids := []string{}
+	if err = get(stub, rids, "routes"); err != nil {
+		spew.Dump(err)
+		return
+	}
 	routes := []Route{}
-	// all couriers have same number of routes
-	nHops := len(courier[0].Hops)
-	for n := 0; n < nHops; n++ {
-		hops := []Hop{}
-		price := 0.0
-		for _, h := range courier[n].Hops {
-			price += h.Price * convertToCny[h.Currency]
+	for _, rid := range rids {
+		var route Route
+		if err = get(stub, &route, rid); err != nil {
+			routes = append(routes, route)
 		}
-		hops = append(hops, courier[n].Hops...)
-		routes = append(routes, Route{Hops: hops, Currency: "CNY", Payment: price})
 	}
 	ret, err = json.Marshal(QueryRouteReply{Routes: routes})
+	spew.Dump("reply", ret)
 	return
 }
 
 // create HopIDs based on routeId
 func handleBuyRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
+	spew.Dump(args)
 	var bRoute BuyRoute
 	if err = json.Unmarshal([]byte(args[0]), &bRoute); err != nil {
 		spew.Dump(err)
@@ -232,12 +262,24 @@ func handleBuyRoute(stub shim.ChaincodeStubInterface, args []string) (ret []byte
 		spew.Dump(err)
 		return
 	}
-	parcel.Parcel.Hops = bRoute.Route.Hops
+	if parcel.ParcelID == "" {
+		err = errors.New("Parcel not found")
+		return
+	}
+	// find HOPS using routeId
+	var route Route
+	if err = get(stub, route, bRoute.RouteID); err != nil {
+		spew.Dump(err)
+		return nil, err
+	}
+	parcel.Parcel.Hops = route.Hops
 	err = put(stub, parcel, parcel.ParcelID)
+	spew.Dump("bought", parcel)
 	return
 }
 
 func handlePickup(stub shim.ChaincodeStubInterface, args []string) (ret []byte, err error) {
+	spew.Dump(args)
 	var pickup Pickup
 	if err = json.Unmarshal([]byte(args[0]), &pickup); err != nil {
 		spew.Dump(err)
@@ -258,7 +300,10 @@ func handlePickup(stub shim.ChaincodeStubInterface, args []string) (ret []byte, 
 	}
 	if !found {
 		err = errors.New("Hop not found for parcel")
+		return
 	}
+	err = put(stub, parcel, parcel.ParcelID)
+	spew.Dump("pickup", parcel)
 	return
 }
 
