@@ -19,10 +19,12 @@ import android.widget.Toast;
 import com.coderbunker.hyperledger.App;
 import com.coderbunker.hyperledger.R;
 import com.coderbunker.hyperledger.parcel.ParcelService;
+import com.coderbunker.hyperledger.parcel.ParcelUtil;
 import com.coderbunker.hyperledger.qrcode.BarcodeActivity;
 import com.coderbunker.hyperledger.qrcode.QRCodeActivity;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ShipperActivity extends AppCompatActivity {
 
@@ -62,7 +64,6 @@ public class ShipperActivity extends AppCompatActivity {
         if (RESULT_CANCELED == resultCode) {
             return;
         }
-
         info.setText(
                 BarcodeActivity.getCodeFromResult(data)
                         .getCode()
@@ -94,11 +95,6 @@ public class ShipperActivity extends AppCompatActivity {
                 }
                 return;
         }
-    }
-
-    public void updateUI(String data) {
-        // TODO update data
-        Log.d(App.TAG, "updateUI");
     }
 
     private void scanQRCode() {

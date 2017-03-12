@@ -2,6 +2,7 @@ package com.coderbunker.hyperledger;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
@@ -14,8 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.coderbunker.hyperledger.parcel.ParcelFragment;
+import com.coderbunker.hyperledger.receiver.ReceiverActivity;
 import com.coderbunker.hyperledger.route.RouteFragment;
 import com.coderbunker.hyperledger.shipper.ShipperActivity;
+import com.coderbunker.hyperledger.test.AppMenuItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,6 +38,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        MenuItem menuItem = new AppMenuItem(R.id.nav_camera);
+        onNavigationItemSelected(menuItem);
     }
 
     @Override
@@ -86,7 +96,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, ShipperActivity.class);
             startActivity(intent);
         } else if (id == R.id.receiver) {
-            Intent intent = new Intent(this, ShipperActivity.class);
+            Intent intent = new Intent(this, ReceiverActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
             Log.d(App.TAG, "nav_gallery is called");

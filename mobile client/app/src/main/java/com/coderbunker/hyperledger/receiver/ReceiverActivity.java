@@ -10,6 +10,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +35,7 @@ public class ReceiverActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_shipper);
+        setContentView(R.layout.layout_receiver);
         Log.d(App.TAG, "ShipperFragment run");
         info = (TextView) findViewById(R.id.info);
         View view = findViewById(R.id.container);
@@ -44,13 +46,13 @@ public class ReceiverActivity extends AppCompatActivity {
                 scanQRCode();
             }
         });
-        view.findViewById(R.id.change_ownership).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // show qr code
-                showQRCode();
-            }
-        });
+//        view.findViewById(R.id.change_ownership).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // show qr code
+//                showQRCode();
+//            }
+//        });
     }
 
     @Override
@@ -90,9 +92,10 @@ public class ReceiverActivity extends AppCompatActivity {
         }
     }
 
-    public void updateUI(String data) {
-        // TODO update data
-        Log.d(App.TAG, "updateUI");
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        new MenuInflater(this).inflate();
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void scanQRCode() {
