@@ -90,7 +90,7 @@ function invoke(user, fcn, args) {
 	})
 }
 
-function query(user, rowId) {
+function query(user, rowId, args) {
 	if(!user) {
 		return Promise.reject('query: User (registrar) parameter is required')
 	}
@@ -98,7 +98,7 @@ function query(user, rowId) {
 	var queryRequest = {
 		chaincodeID: CHAINCODE_ID,
 		fcn: `query${rowId}`,
-		args: [rowId]
+		args: [args]
 	};
 
 	return new Promise((resolve, reject) => {

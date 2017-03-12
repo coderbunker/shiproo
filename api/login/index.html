@@ -45,6 +45,7 @@
         </form>
       </div>
 			<div class="form">
+        <div id="username"></div>
 				<form class="register-form">
 					<input type="text" placeholder="Order ID" value="33cd9a8d-fe37-4e74-99d8-68566eb022ed"/>
 					<input type="text" placeholder="Shipper name" value="Lenovo" />
@@ -55,9 +56,17 @@
 					<button id="createParcel">Create a parcel</button>
 				</form>
 			</div>
-      <pre id="messages" style="height: 400px; overflow: scroll"></pre>
 		</div>
+    <div class="form">
+      <form class="register-form">
+      <button id="queryRoute" type="button" title="Query Routes">
+        Routes
+      </button>
+      <pre id="routes" style="height: 400px; overflow: scroll"></pre>
+      </form>
+    </div>
 		<div class="footer">
+        <pre id="messages" style="height: 400px; overflow: scroll"></pre>
       		<p class="footer1">Copyright © ShipRoo, All Rights Reserved.</p>    
   		</div>
 	</div>	

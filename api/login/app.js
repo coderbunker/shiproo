@@ -11,6 +11,21 @@
   };
 
   var parcelId = 'f45cea00-be82-47a3-a458-911280988114'
+  var parcel = {
+      message: 'createParcel',
+      username: 'shuyu',
+      shipper: 'lenovo',
+      receiver: 'google',
+      parcelId: parcelId,
+      orderId: "order1",
+      pickupAddress: "Xuhui, Shanghai, PRC",
+      destinationAddress: "Mountain View, California, USA",
+      size: "[61,46,46]",
+      weight: 5000,
+      manifest: "Lenovo X220i laptop",
+      declaredValue: "500",
+      currency: "USD"
+  }
 
   let ws;
 
@@ -26,11 +41,18 @@
       ws.addEventListener('message', function (event) {
           console.log('Message from server', event.data);
           messages.textContent += `\n${event.data}`
+          const msgObj = JSON.parse(event.data)
+          switch(msgObj.message) {
+            case 'findRouteReply':
+              $('#routes').text(JSON.stringify(event.data))
+              break;
+            case 'loginReply':
+              $('#username').text(msgObj.token)
+              break;
+          }
       });
 
     });
-
-    // Listen for messages
 
     ws.onerror = () => showMessage('WebSocket error');
     ws.onopen = () => {
@@ -65,26 +87,12 @@
   });
 
   $('#createParcel').click(() => {
-    ws.send(JSON.stringify({
-      message: 'createParcel',
-      username: 'shuyu',
-      shipper: 'lenovo',
-      receiver: 'google',
-      parcelId: parcelId,
-      orderId: "order1",
-      pickupAddress: "Xuhui, Shanghai, PRC",
-      destinationAddress: "Mountain View, California, USA",
-      size: "[61,46,46]",
-      weight: 5000,
-      manifest: "Lenovo X220i laptop",
-      declaredValue: "500",
-      currency: "USD"
-    }))
+    ws.send(JSON.stringify(parcel))
   });
 
 $('#queryRoute').click(() => {
     ws.send(JSON.stringify({
-      message: 'queryRoute',
+      message: 'findRoute',
       parcelId: parcelId,
     }))
 })
