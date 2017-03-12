@@ -34,6 +34,11 @@ ws.on('open', function open() {
         log(`${m.toString()}`)
     })
     config.reduce((p, c) => {
+        if(c.skip) {
+            console.log(`SKIPPING ${JSON.stringify(c)}`)
+            return p
+        }
+
         if(c.invoke) {
             return p.then(() => {
                 const invoke = lib.loadQueryText(c.invoke, {
@@ -63,6 +68,17 @@ ws.on('open', function open() {
                     ws.once('error', (e) => {
                         reject(e)
                     })
+                })
+            })  
+        }
+
+        if(c.waitTime) {
+            return p.then(() => {
+                log(`Waiting ${c.waitTime} ms`)
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve()
+                    }, c.waitTime)
                 })
             })  
         }

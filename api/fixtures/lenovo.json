@@ -5,8 +5,13 @@
     },
     {
         "poll": "logins",
-        "expect": ["abhishek","dmitry","ricky","shuyu"]
-    }, 
+        "expect": ["abhishek","dmitry","ricky","shuyu"],
+        "skip": true
+    },
+    {
+        "waitTime": 5000,
+        "skip": false
+    },  
     {
         "invoke": "createParcel",
         "expect": "createParcelReply"

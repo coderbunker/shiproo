@@ -5,8 +5,10 @@ const path = require('path')
 
 var invoke
 if(process.env.PRODUCTION) {
+    console.log("RUNNING AS PRODUCTION")
     invoke = require('./hyperledger.js')
 } else {
+    console.log("RUNNING AS TESTING")
     invoke = require('./hyperledgerFake.js')
 }
 const config = require('./config.json')
